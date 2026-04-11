@@ -1,0 +1,65 @@
+{
+  "site": {
+    "name": "Entreprise Template",
+    "tagline": "Votre slogan ici",
+    "phone": "06 00 00 00 00",
+    "email": "contact@exemple.fr",
+    "address": "12 rue Exemple, 75000 Paris",
+    "hours": "Lun–Ven 9h–18h",
+    "siret": "000 000 000 00000"
+  },
+  "theme": {
+    "primary": "#1D4ED8",
+    "secondary": "#F59E0B",
+    "font": "Inter"
+  },
+  "mode": "onepage",
+  "sections": {
+    "hero": {
+      "visible": true,
+      "title": "Titre principal accrocheur",
+      "subtitle": "Sous-titre qui explique la valeur en une phrase courte.",
+      "cta_text": "Nous contacter",
+      "cta_link": "#contact",
+      "bg_image": ""
+    },
+    "services": {
+      "visible": true,
+      "title": "Nos services",
+      "items": [
+        { "icon": "🔧", "title": "Service 1", "description": "Description courte du premier service proposé." },
+        { "icon": "⚡", "title": "Service 2", "description": "Description courte du deuxième service proposé." },
+        { "icon": "✅", "title": "Service 3", "description": "Description courte du troisième service proposé." }
+      ]
+    },
+    "about": {
+      "visible": true,
+      "title": "À propos de nous",
+      "text": "Présentation de l'entreprise en deux ou trois phrases. Expérience, valeurs, engagement.",
+      "image": "",
+      "stats": [
+        { "value": "10+", "label": "Ans d'expérience" },
+        { "value": "500+", "label": "Clients satisfaits" },
+        { "value": "100%", "label": "Satisfaction garantie" }
+      ]
+    },
+    "testimonials": {
+      "visible": true,
+      "items": [
+        { "name": "Marie D.", "text": "Excellent service, je recommande vivement !", "rating": 5 },
+        { "name": "Jean P.", "text": "Rapide, sérieux et professionnel.", "rating": 5 },
+        { "name": "Sophie L.", "text": "Très bonne expérience, je reviendrai.", "rating": 5 }
+      ]
+    },
+    "cta": {
+      "visible": true,
+      "title": "Prêt à démarrer ?",
+      "subtitle": "Contactez-nous aujourd'hui pour un devis gratuit.",
+      "button_text": "Demander un devis"
+    },
+    "contact": {
+      "visible": true,
+      "web3forms_key": "VOTRE_CLE_ICI"
+    }
+  }
+}

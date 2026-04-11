@@ -1,0 +1,67 @@
+---
+import content from '../content.json';
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionWrapper from '../components/ui/SectionWrapper.astro';
+
+const { site, theme } = content;
+---
+
+<PageLayout
+  title="Mentions légales"
+  description={`Mentions légales de ${site.name}`}
+  site={site}
+  theme={theme}
+>
+  <SectionWrapper bg="white">
+    <div class="max-w-3xl mx-auto prose prose-gray">
+      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">Mentions légales</h1>
+
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Éditeur du site</h2>
+        <p class="text-gray-600 leading-relaxed">
+          <strong>{site.name}</strong><br />
+          {site.address}<br />
+          SIRET : {site.siret}<br />
+          Téléphone : <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="text-primary hover:underline">{site.phone}</a><br />
+          Email : <a href={`mailto:${site.email}`} class="text-primary hover:underline">{site.email}</a>
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Hébergeur</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Hébergeur à compléter.<br />
+          Adresse de l'hébergeur à compléter.
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Propriété intellectuelle</h2>
+        <p class="text-gray-600 leading-relaxed">
+          L'ensemble des contenus présents sur ce site (textes, images, logos) est la propriété exclusive de {site.name},
+          sauf mentions contraires. Toute reproduction, même partielle, est interdite sans autorisation préalable.
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Données personnelles</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Les informations recueillies via le formulaire de contact sont utilisées uniquement pour répondre à vos demandes.
+          Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données.
+          Pour exercer ces droits, contactez-nous à l'adresse : <a href={`mailto:${site.email}`} class="text-primary hover:underline">{site.email}</a>.
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Cookies</h2>
+        <p class="text-gray-600 leading-relaxed">
+          Ce site n'utilise pas de cookies de traçage ou de cookies tiers à des fins publicitaires.
+        </p>
+      </section>
+
+      <div class="mt-10">
+        <a href="/" class="text-primary font-medium hover:underline">&larr; Retour à l'accueil</a>
+      </div>
+    </div>
+  </SectionWrapper>
+</PageLayout>

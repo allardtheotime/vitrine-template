@@ -1,0 +1,18 @@
+---
+interface Props {
+  text: string;
+  variant?: 'primary' | 'secondary' | 'gray';
+}
+
+const { text, variant = 'primary' } = Astro.props;
+
+const variantClass = {
+  primary: 'bg-blue-100 text-primary',
+  secondary: 'bg-amber-100 text-amber-800',
+  gray: 'bg-gray-100 text-gray-600',
+}[variant];
+---
+
+<span class={`inline-block text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full ${variantClass}`}>
+  {text}
+</span>
