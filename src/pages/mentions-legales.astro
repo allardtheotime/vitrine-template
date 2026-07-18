@@ -5,6 +5,24 @@ import SectionWrapper from '../components/ui/SectionWrapper.astro';
 
 const { site, theme } = content;
 const isDemo = Boolean((content as { meta?: { is_demo?: boolean } }).meta?.is_demo);
+
+interface LegalSite {
+  legal_name?: string;
+  legal_form?: string;
+  bce_number?: string;
+  vat_number?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  regulated_profession?: boolean;
+  regulatory_authority?: string;
+  license_number?: string;
+}
+
+const legalSite = site as LegalSite;
+const FALLBACK = 'Information à compléter';
+const field = (value?: string) => (value && value.trim() !== '' ? value : FALLBACK);
+const isRegulatedProfession = legalSite.regulated_profession === true;
 ---
 
 <PageLayout
@@ -21,19 +39,34 @@ const isDemo = Boolean((content as { meta?: { is_demo?: boolean } }).meta?.is_de
       <section class="mb-8">
         <h2 class="text-xl font-bold text-gray-800 mb-3">Éditeur du site</h2>
         <p class="text-gray-600 leading-relaxed">
-          <strong>{site.name}</strong><br />
-          {site.address}<br />
-          SIRET : {site.siret}<br />
-          Téléphone : <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="text-primary hover:underline">{site.phone}</a><br />
-          Email : <a href={`mailto:${site.email}`} class="text-primary hover:underline">{site.email}</a>
+          Raison sociale : <strong>{field(legalSite.legal_name)}</strong><br />
+          Forme juridique : {field(legalSite.legal_form)}<br />
+          Numéro BCE : {field(legalSite.bce_number)}<br />
+          Numéro de TVA : {field(legalSite.vat_number)}<br />
+          Adresse : {field(legalSite.address)}<br />
+          Téléphone : {legalSite.phone && legalSite.phone.trim() !== ''
+            ? <a href={`tel:${legalSite.phone.replace(/\s/g, '')}`} class="text-primary hover:underline">{legalSite.phone}</a>
+            : FALLBACK}<br />
+          Email : {legalSite.email && legalSite.email.trim() !== ''
+            ? <a href={`mailto:${legalSite.email}`} class="text-primary hover:underline">{legalSite.email}</a>
+            : FALLBACK}
         </p>
       </section>
+
+      {isRegulatedProfession && (
+        <section class="mb-8">
+          <h2 class="text-xl font-bold text-gray-800 mb-3">Autorité de tutelle</h2>
+          <p class="text-gray-600 leading-relaxed">
+            Autorité de tutelle : {field(legalSite.regulatory_authority)}<br />
+            Numéro d'agrément : {field(legalSite.license_number)}
+          </p>
+        </section>
+      )}
 
       <section class="mb-8">
         <h2 class="text-xl font-bold text-gray-800 mb-3">Hébergeur</h2>
         <p class="text-gray-600 leading-relaxed">
-          Hébergeur à compléter.<br />
-          Adresse de l'hébergeur à compléter.
+          Hébergeur : Netlify
         </p>
       </section>
 

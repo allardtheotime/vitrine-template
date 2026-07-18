@@ -6,7 +6,14 @@
     "email": "contact@exemple.fr",
     "address": "12 rue Exemple, 75000 Paris",
     "hours": "Lun–Ven 9h–18h",
-    "siret": "000 000 000 00000"
+    "siret": "000 000 000 00000",
+    "legal_name": "",
+    "legal_form": "",
+    "bce_number": "",
+    "vat_number": "",
+    "regulated_profession": false,
+    "regulatory_authority": "",
+    "license_number": ""
   },
   "theme": {
     "primary": "#1D4ED8",

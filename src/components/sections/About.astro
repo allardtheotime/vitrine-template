@@ -11,10 +11,10 @@ interface Props {
   title: string;
   text: string;
   image?: string;
-  stats: Stat[];
+  stats?: Stat[];
 }
 
-const { title, text, image = '', stats } = Astro.props;
+const { title, text, image = '', stats = [] } = Astro.props;
 ---
 
 <SectionWrapper id="about" bg="white">
@@ -26,14 +26,16 @@ const { title, text, image = '', stats } = Astro.props;
       <p class="text-gray-600 leading-relaxed text-lg mb-8">{text}</p>
 
       <!-- Stats -->
-      <div class="grid grid-cols-3 gap-4">
-        {stats.map(stat => (
-          <div class="text-center p-4 bg-gray-50 rounded-xl">
-            <div class="text-2xl sm:text-3xl font-bold text-primary">{stat.value}</div>
-            <div class="text-xs sm:text-sm text-gray-500 mt-1 leading-tight">{stat.label}</div>
-          </div>
-        ))}
-      </div>
+      {stats.length > 0 && (
+        <div class="grid grid-cols-3 gap-4">
+          {stats.map(stat => (
+            <div class="text-center p-4 bg-gray-50 rounded-xl">
+              <div class="text-2xl sm:text-3xl font-bold text-primary">{stat.value}</div>
+              <div class="text-xs sm:text-sm text-gray-500 mt-1 leading-tight">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
 
     <!-- Image ou placeholder -->

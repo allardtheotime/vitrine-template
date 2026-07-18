@@ -8,7 +8,7 @@
 
 Tu travailles sur un site vitrine pour une PME ou un artisan français.
 Stack : Astro + Tailwind CSS v3 + Web3Forms.
-Déploiement : Vercel (statique, zéro serveur).
+Déploiement : Netlify (statique, zéro serveur).
 Source de données : `src/content.json` — c'est la seule source de vérité du projet.
 
 ---
@@ -245,7 +245,7 @@ Afficher un message d'erreur si la soumission échoue.
 
 La page `mentions-legales.astro` est obligatoire sur chaque projet.
 Elle est générée depuis `content.json` → champs `site.name`, `site.siret`, `site.address`, `site.email`.
-Contenu minimal obligatoire : éditeur du site, hébergeur (Vercel), contact.
+Contenu minimal obligatoire : éditeur du site, hébergeur (Netlify), contact.
 
 ---
 
