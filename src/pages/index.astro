@@ -9,6 +9,7 @@ import CTABanner from '../components/sections/CTABanner.astro';
 import Contact from '../components/sections/Contact.astro';
 
 const { site, theme, sections } = content;
+const isDemo = Boolean((content as { meta?: { is_demo?: boolean } }).meta?.is_demo);
 ---
 
 <PageLayout
@@ -16,6 +17,7 @@ const { site, theme, sections } = content;
   description={`${site.name} – ${site.tagline}`}
   site={site}
   theme={theme}
+  isDemo={isDemo}
 >
   {sections.hero.visible && (
     <Hero

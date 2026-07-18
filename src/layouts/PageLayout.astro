@@ -20,12 +20,13 @@ interface Props {
     secondary: string;
     font: string;
   };
+  isDemo?: boolean;
 }
 
-const { title, description, site, theme } = Astro.props;
+const { title, description, site, theme, isDemo = false } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} siteName={site.name} theme={theme}>
+<BaseLayout title={title} description={description} siteName={site.name} theme={theme} isDemo={isDemo}>
   <Navbar siteName={site.name} phone={site.phone} />
   <main>
     <slot />

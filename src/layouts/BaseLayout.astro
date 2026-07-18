@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import DemoNotice from '../components/ui/DemoNotice.astro';
 
 interface Props {
   title: string;
@@ -10,9 +11,10 @@ interface Props {
     secondary: string;
     font: string;
   };
+  isDemo?: boolean;
 }
 
-const { title, description = '', siteName, theme } = Astro.props;
+const { title, description = '', siteName, theme, isDemo = false } = Astro.props;
 const pageTitle = `${title} | ${siteName}`;
 ---
 
@@ -39,5 +41,6 @@ const pageTitle = `${title} | ${siteName}`;
   </head>
   <body>
     <slot />
+    <DemoNotice isDemo={isDemo} />
   </body>
 </html>

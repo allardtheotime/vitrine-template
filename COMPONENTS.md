@@ -28,8 +28,8 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| BaseLayout | `src/layouts/BaseLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor` | Wrapper pour mode one-page | Boilerplate |
-| PageLayout | `src/layouts/PageLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `title` | Wrapper pour chaque page en mode multi-pages | Boilerplate |
+| BaseLayout | `src/layouts/BaseLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `isDemo?` | Wrapper pour mode one-page. Rend `<DemoNotice isDemo={isDemo} />` en fin de `<body>` | Boilerplate |
+| PageLayout | `src/layouts/PageLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `title`, `isDemo?` | Wrapper pour chaque page en mode multi-pages. Transmet `isDemo` à `BaseLayout` | Boilerplate |
 
 ---
 
@@ -53,6 +53,7 @@ Chaque composant est documenté avec :
 | Button | `src/components/ui/Button.astro` | `variant` (primary/secondary/ghost), `size` (sm/md/lg), `href?`, `type?` | Bouton réutilisable partout | Boilerplate |
 | SectionWrapper | `src/components/ui/SectionWrapper.astro` | `id?`, `bg?` (bg-white/bg-gray-50), `class?` | Conteneur de section avec padding et max-width | Boilerplate |
 | Badge | `src/components/ui/Badge.astro` | `text`, `color?` | Étiquette colorée pour labels et catégories | Boilerplate |
+| DemoNotice | `src/components/ui/DemoNotice.astro` | `isDemo?` (boolean, défaut `false`) | Pop-up modale affichée uniquement quand `isDemo` est vrai, prévient que le contenu est une démo générée automatiquement. Bouton "J'ai compris" qui masque la modale pour le reste de la session via `sessionStorage` (réapparaît à une nouvelle session). Intégrée dans `BaseLayout.astro` (rendu dans `<body>`) et exposée via `PageLayout.astro` → toutes les pages en héritent automatiquement. Contient un `<script>` client — dérogation ciblée à la règle "zéro JS" de `CLAUDE.md` §11, requise par la fonctionnalité elle-même. | Boilerplate |
 
 ---
 

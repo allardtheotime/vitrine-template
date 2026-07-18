@@ -4,6 +4,7 @@ import PageLayout from '../layouts/PageLayout.astro';
 import SectionWrapper from '../components/ui/SectionWrapper.astro';
 
 const { site, theme } = content;
+const isDemo = Boolean((content as { meta?: { is_demo?: boolean } }).meta?.is_demo);
 ---
 
 <PageLayout
@@ -11,6 +12,7 @@ const { site, theme } = content;
   description={`Mentions légales de ${site.name}`}
   site={site}
   theme={theme}
+  isDemo={isDemo}
 >
   <SectionWrapper bg="white">
     <div class="max-w-3xl mx-auto prose prose-gray">
