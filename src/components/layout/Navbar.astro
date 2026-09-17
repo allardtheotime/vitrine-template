@@ -1,17 +1,16 @@
 ---
+interface NavLink {
+  label: string;
+  href: string;
+}
+
 interface Props {
   siteName: string;
   phone: string;
+  links?: NavLink[];
 }
 
-const { siteName, phone } = Astro.props;
-
-const navLinks = [
-  { href: '#services', label: 'Services' },
-  { href: '#about', label: 'À propos' },
-  { href: '#testimonials', label: 'Avis' },
-  { href: '#contact', label: 'Contact' },
-];
+const { siteName, phone, links = [] } = Astro.props;
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
@@ -24,7 +23,7 @@ const navLinks = [
 
       <!-- Navigation desktop -->
       <nav class="hidden md:flex items-center gap-6" aria-label="Navigation principale">
-        {navLinks.map(link => (
+        {links.map(link => (
           <a
             href={link.href}
             class="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
@@ -68,7 +67,7 @@ const navLinks = [
     aria-label="Menu mobile"
   >
     <nav class="flex flex-col px-4 py-3 gap-1">
-      {navLinks.map(link => (
+      {links.map(link => (
         <a
           href={link.href}
           class="py-2 px-3 text-sm font-medium text-gray-700 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors"

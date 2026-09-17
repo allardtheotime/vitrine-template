@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #1D4ED8;
-  --color-secondary: #F59E0B;
-  --font-body: 'Inter', system-ui, sans-serif;
+  /* fallback si theme absent : valeurs neutres, la vraie source de vérité est content.json → theme, injectée par BaseLayout.astro */
+  --color-primary: #1f2937;
+  --color-secondary: #6b7280;
+  --font-body: system-ui, sans-serif;
 }
 
 @layer base {

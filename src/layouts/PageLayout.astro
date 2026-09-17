@@ -3,6 +3,11 @@ import BaseLayout from './BaseLayout.astro';
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
 
+interface NavigationItem {
+  label: string;
+  page: string;
+}
+
 interface Props {
   title: string;
   description?: string;
@@ -21,13 +26,21 @@ interface Props {
     font: string;
   };
   isDemo?: boolean;
+  navigation?: NavigationItem[];
+  mode?: 'onepage' | 'multipage';
 }
 
-const { title, description, site, theme, isDemo = false } = Astro.props;
+const { title, description, site, theme, isDemo = false, navigation = [], mode = 'onepage' } = Astro.props;
+
+// En onepage les pages "page" sont des ancres de la home (#slug), en multipage ce sont de vraies routes (/slug)
+const links = navigation.map((item) => ({
+  label: item.label,
+  href: mode === 'multipage' ? `/${item.page}` : `#${item.page}`,
+}));
 ---
 
 <BaseLayout title={title} description={description} siteName={site.name} theme={theme} isDemo={isDemo}>
-  <Navbar siteName={site.name} phone={site.phone} />
+  <Navbar siteName={site.name} phone={site.phone} links={links} />
   <main>
     <slot />
   </main>

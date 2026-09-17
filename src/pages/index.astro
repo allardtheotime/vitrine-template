@@ -1,15 +1,51 @@
 ---
 import content from '../content.json';
 import PageLayout from '../layouts/PageLayout.astro';
-import Hero from '../components/sections/Hero.astro';
-import Services from '../components/sections/Services.astro';
-import About from '../components/sections/About.astro';
-import Testimonials from '../components/sections/Testimonials.astro';
-import CTABanner from '../components/sections/CTABanner.astro';
-import Contact from '../components/sections/Contact.astro';
+import SectionRenderer, { type Section } from '../components/SectionRenderer.astro';
 
-const { site, theme, sections } = content;
+const { site, theme, sections, navigation, mode } = content;
 const isDemo = Boolean((content as { meta?: { is_demo?: boolean } }).meta?.is_demo);
+
+const pageSections: Section[] = [
+  sections.hero.visible && {
+    type: 'hero' as const,
+    title: sections.hero.title,
+    subtitle: sections.hero.subtitle,
+    cta_text: sections.hero.cta_text,
+    cta_link: sections.hero.cta_link,
+    bg_image: sections.hero.bg_image,
+  },
+  sections.services.visible && {
+    type: 'services' as const,
+    title: sections.services.title,
+    items: sections.services.items,
+  },
+  sections.about.visible && {
+    type: 'about' as const,
+    title: sections.about.title,
+    text: sections.about.text,
+    image: sections.about.image,
+    stats: sections.about.stats,
+  },
+  sections.testimonials.visible && {
+    type: 'testimonials' as const,
+    items: sections.testimonials.items,
+  },
+  sections.cta.visible && {
+    type: 'cta' as const,
+    title: sections.cta.title,
+    subtitle: sections.cta.subtitle,
+    button_text: sections.cta.button_text,
+  },
+  sections.contact.visible && {
+    type: 'contact' as const,
+    web3forms_key: sections.contact.web3forms_key,
+    email: site.email,
+    phone: site.phone,
+    address: site.address,
+    hours: site.hours,
+  },
+].filter((section): section is Section => Boolean(section));
 ---
 
 <PageLayout
@@ -18,54 +54,8 @@ const isDemo = Boolean((content as { meta?: { is_demo?: boolean } }).meta?.is_de
   site={site}
   theme={theme}
   isDemo={isDemo}
+  navigation={navigation}
+  mode={mode}
 >
-  {sections.hero.visible && (
-    <Hero
-      title={sections.hero.title}
-      subtitle={sections.hero.subtitle}
-      cta_text={sections.hero.cta_text}
-      cta_link={sections.hero.cta_link}
-      bg_image={sections.hero.bg_image}
-    />
-  )}
-
-  {sections.services.visible && (
-    <Services
-      title={sections.services.title}
-      items={sections.services.items}
-    />
-  )}
-
-  {sections.about.visible && (
-    <About
-      title={sections.about.title}
-      text={sections.about.text}
-      image={sections.about.image}
-      stats={sections.about.stats}
-    />
-  )}
-
-  {sections.testimonials.visible && (
-    <Testimonials
-      items={sections.testimonials.items}
-    />
-  )}
-
-  {sections.cta.visible && (
-    <CTABanner
-      title={sections.cta.title}
-      subtitle={sections.cta.subtitle}
-      button_text={sections.cta.button_text}
-    />
-  )}
-
-  {sections.contact.visible && (
-    <Contact
-      web3forms_key={sections.contact.web3forms_key}
-      email={site.email}
-      phone={site.phone}
-      address={site.address}
-      hours={site.hours}
-    />
-  )}
+  <SectionRenderer sections={pageSections} />
 </PageLayout>

@@ -21,6 +21,12 @@
     "font": "Inter"
   },
   "mode": "onepage",
+  "navigation": [
+    { "label": "Services", "page": "services" },
+    { "label": "À propos", "page": "about" },
+    { "label": "Avis", "page": "testimonials" },
+    { "label": "Contact", "page": "contact" }
+  ],
   "sections": {
     "hero": {
       "visible": true,
