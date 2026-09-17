@@ -22,6 +22,9 @@
   "theme": {
     "primary": "#1D4ED8",
     "secondary": "#F59E0B",
+    "bg": "#F9FAFB",
+    "surface": "#FFFFFF",
+    "footer": "#111827",
     "font": "Inter"
   },
   "sections": {
@@ -49,9 +52,9 @@
       "title": "Nos services",
       "subtitle": "",
       "items": [
-        { "icon": "🔧", "title": "Service 1", "description": "Description courte du premier service proposé." },
-        { "icon": "⚡", "title": "Service 2", "description": "Description courte du deuxième service proposé." },
-        { "icon": "✅", "title": "Service 3", "description": "Description courte du troisième service proposé." }
+        { "icon": "wrench", "title": "Service 1", "description": "Description courte du premier service proposé." },
+        { "icon": "zap", "title": "Service 2", "description": "Description courte du deuxième service proposé." },
+        { "icon": "check-circle", "title": "Service 3", "description": "Description courte du troisième service proposé." }
       ]
     },
     "testimonials": {

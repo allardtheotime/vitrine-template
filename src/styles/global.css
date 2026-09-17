@@ -1,3 +1,11 @@
+/* Police par défaut auto-hébergée (@fontsource/inter) — aucune requête externe,
+   font-display: swap déjà géré par le package. Ne jamais remplacer par un <link>
+   Google Fonts (cf. CLAUDE.md §11). */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,12 +15,20 @@
 :root {
   --color-primary: #1D4ED8;
   --color-secondary: #F59E0B;
+  --color-bg: #F9FAFB;
+  --color-surface: #FFFFFF;
+  --color-footer: #111827;
   --font-family: 'Inter', system-ui, sans-serif;
 }
 
+/* Pas de règle "font-family" ici : Tailwind Preflight (@tailwind base ci-dessus)
+   applique déjà `font-family: var(--font-family), system-ui, sans-serif` sur <html>
+   via theme.fontFamily.sans (tailwind.config.cjs) — avec le fallback complet.
+   Une règle html{font-family:var(--font-family)} ici écraserait ce fallback et
+   ferait retomber tout le texte sur la police par défaut du navigateur dès que
+   --font-family ne correspond à aucune police réellement chargée. */
 html {
   scroll-behavior: smooth;
-  font-family: var(--font-family);
 }
 
 /* Zone tactile minimale sur mobile pour tout élément interactif */

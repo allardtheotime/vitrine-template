@@ -1,0 +1,25 @@
+---
+// Icônes Lucide (lucide-static, MIT) — SVG lues au build, aucun JS ni requête réseau
+// côté client. `name` doit correspondre à un fichier existant dans
+// node_modules/lucide-static/icons/ (liste curatée : cf. public/admin/config.yml).
+import fs from 'node:fs';
+import path from 'node:path';
+
+export interface Props {
+  name: string;
+  class?: string;
+}
+
+const { name, class: className = 'h-8 w-8' } = Astro.props;
+
+const iconsDir = path.resolve('node_modules/lucide-static/icons');
+const fallback = 'circle-help';
+const target = fs.existsSync(path.join(iconsDir, `${name}.svg`)) ? name : fallback;
+
+const raw = fs.readFileSync(path.join(iconsDir, `${target}.svg`), 'utf-8');
+const svg = raw
+  .replace(/class="[^"]*"/, `class="${className}"`)
+  .replace('<svg', '<svg aria-hidden="true"');
+---
+
+<Fragment set:html={svg} />

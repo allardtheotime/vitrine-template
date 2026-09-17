@@ -28,7 +28,7 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| BaseLayout | `src/layouts/BaseLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `fontFamily`, `navLinks[]`, `phone?`, `email?`, `address?`, `legalName?`, `isDemo?` | Layout unique (site one-page). Injecte les variables CSS de thème, rend Navbar/Footer/DemoNotice | Boilerplate |
+| BaseLayout | `src/layouts/BaseLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `fontFamily`, `bgColor?`, `surfaceColor?`, `footerColor?`, `navLinks[]`, `phone?`, `email?`, `address?`, `legalName?`, `isDemo?` | Layout unique (site one-page). Injecte les variables CSS de thème (dont bg/surface/footer, avec fallback par défaut), rend Navbar/Footer/DemoNotice | Boilerplate |
 
 ---
 
@@ -38,7 +38,7 @@ Chaque composant est documenté avec :
 |-----------|---------|-------|-------|--------|
 | Hero | `src/components/sections/Hero.astro` | `title`, `subtitle?`, `ctaText?`, `ctaLink?`, `image?` | Section d'accroche, toujours en premier | Boilerplate |
 | About | `src/components/sections/About.astro` | `title`, `subtitle?`, `text`, `image?`, `stats?[]{value, label}` | Présentation de l'entreprise + chiffres clés | Boilerplate |
-| Services | `src/components/sections/Services.astro` | `title`, `subtitle?`, `items[]{icon, title, description}` | Grille de services (2-3 colonnes) | Boilerplate |
+| Services | `src/components/sections/Services.astro` | `title`, `subtitle?`, `items[]{icon, title, description}` | Grille de services (2-3 colonnes). `icon` = nom Lucide (cf. `Icon.astro`), jamais un emoji | Boilerplate |
 | Testimonials | `src/components/sections/Testimonials.astro` | `title?`, `items[]{name, text, rating}` | Grille d'avis clients avec étoiles | Boilerplate |
 | Contact | `src/components/sections/Contact.astro` | `phone?`, `email?`, `address?`, `hours?` | Coordonnées + formulaire vers `/api/contact`. Rendue automatiquement depuis `site.*`, jamais une entrée de `sections{}` | Boilerplate |
 
@@ -49,9 +49,10 @@ Chaque composant est documenté avec :
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
 | Button | `src/components/ui/Button.astro` | `variant?` (primary/secondary/ghost), `size?` (sm/md/lg), `href?`, `type?`, `class?` | Bouton/lien réutilisable partout | Boilerplate |
-| SectionWrapper | `src/components/ui/SectionWrapper.astro` | `id?`, `bg?` (bg-white/bg-gray-50), `class?` | Conteneur de section avec padding et max-width | Boilerplate |
+| SectionWrapper | `src/components/ui/SectionWrapper.astro` | `id?`, `bg?` ('surface' \| 'bg', défaut 'surface'), `class?` | Conteneur de section avec padding et max-width. `bg` est sémantique (thème), pas une classe Tailwind littérale | Boilerplate |
 | Badge | `src/components/ui/Badge.astro` | `text`, `color?` (primary/secondary/neutral) | Étiquette colorée pour labels et catégories | Boilerplate |
 | DemoNotice | `src/components/ui/DemoNotice.astro` | `isDemo?` (boolean, défaut `false`) | Pop-up affichée quand `meta.is_demo` est vrai, masquée pour la session via `sessionStorage` | Boilerplate |
+| Icon | `src/components/ui/Icon.astro` | `name` (nom de fichier `lucide-static`, ex. `"wrench"`), `class?` (défaut `h-8 w-8`) | Icône SVG Lucide inline, lue au build depuis `node_modules/lucide-static/icons/`. Repli sur `circle-help` si le nom n'existe pas. Zéro JS, zéro requête réseau | Boilerplate |
 
 ---
 

@@ -13,6 +13,9 @@ const navLinks = [{ label: 'Retour au site', href: '/' }];
   primaryColor={theme.primary}
   secondaryColor={theme.secondary}
   fontFamily={theme.font}
+  bgColor={theme.bg}
+  surfaceColor={theme.surface}
+  footerColor={theme.footer}
   navLinks={navLinks}
   phone={site.phone}
   email={site.email}
@@ -35,11 +38,13 @@ const navLinks = [{ label: 'Retour au site', href: '/' }];
         )}
       </div>
 
-      <div>
-        <h2 class="font-semibold text-gray-900">Contact</h2>
-        {site.email && <p>{site.email}</p>}
-        {site.phone && <p>{site.phone}</p>}
-      </div>
+      {(site.email || site.phone) && (
+        <div>
+          <h2 class="font-semibold text-gray-900">Contact</h2>
+          {site.email && <p>{site.email}</p>}
+          {site.phone && <p>{site.phone}</p>}
+        </div>
+      )}
 
       <div>
         <h2 class="font-semibold text-gray-900">Hébergement</h2>

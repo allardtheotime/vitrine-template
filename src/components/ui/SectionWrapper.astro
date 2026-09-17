@@ -1,14 +1,16 @@
 ---
 export interface Props {
   id?: string;
-  bg?: 'bg-white' | 'bg-gray-50';
+  /** 'surface' = blanc/carte (--color-surface), 'bg' = fond alterné (--color-bg) */
+  bg?: 'surface' | 'bg';
   class?: string;
 }
 
-const { id, bg = 'bg-white', class: className = '' } = Astro.props;
+const { id, bg = 'surface', class: className = '' } = Astro.props;
+const bgClass = bg === 'bg' ? 'bg-[var(--color-bg)]' : 'bg-[var(--color-surface)]';
 ---
 
-<section id={id} class={`${bg} py-16 md:py-24 ${className}`}>
+<section id={id} class={`${bgClass} py-16 md:py-24 ${className}`}>
   <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <slot />
   </div>

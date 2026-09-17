@@ -10,6 +10,9 @@ export interface Props {
   primaryColor: string;
   secondaryColor: string;
   fontFamily: string;
+  bgColor?: string;
+  surfaceColor?: string;
+  footerColor?: string;
   navLinks: { label: string; href: string }[];
   phone?: string;
   email?: string;
@@ -24,6 +27,9 @@ const {
   primaryColor,
   secondaryColor,
   fontFamily,
+  bgColor = '#F9FAFB',
+  surfaceColor = '#FFFFFF',
+  footerColor = '#111827',
   navLinks,
   phone,
   email,
@@ -46,15 +52,18 @@ const {
     <meta property="og:type" content="website" />
     <link rel="canonical" href={Astro.url} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <style define:vars={{ colorPrimary: primaryColor, colorSecondary: secondaryColor, fontFamily }}>
+    <style define:vars={{ colorPrimary: primaryColor, colorSecondary: secondaryColor, colorBg: bgColor, colorSurface: surfaceColor, colorFooter: footerColor, fontFamily }}>
       :root {
         --color-primary: var(--colorPrimary);
         --color-secondary: var(--colorSecondary);
+        --color-bg: var(--colorBg);
+        --color-surface: var(--colorSurface);
+        --color-footer: var(--colorFooter);
         --font-family: var(--fontFamily);
       }
     </style>
   </head>
-  <body class="text-gray-900 antialiased">
+  <body class="bg-[var(--color-bg)] text-gray-900 antialiased">
     <Navbar siteName={siteName} links={navLinks} ctaText="Devis gratuit" ctaHref="#contact" />
     <main>
       <slot />

@@ -1,5 +1,6 @@
 ---
 import SectionWrapper from '../ui/SectionWrapper.astro';
+import Icon from '../ui/Icon.astro';
 
 export interface Props {
   title: string;
@@ -10,7 +11,7 @@ export interface Props {
 const { title, subtitle, items } = Astro.props;
 ---
 
-<SectionWrapper id="services" bg="bg-gray-50">
+<SectionWrapper id="services" bg="bg">
   <div class="text-center">
     <h2 class="text-3xl font-bold text-gray-900">{title}</h2>
     {subtitle && <p class="mt-2 text-lg text-gray-500">{subtitle}</p>}
@@ -18,8 +19,8 @@ const { title, subtitle, items } = Astro.props;
 
   <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {items.map((item) => (
-      <div class="rounded-xl bg-white p-6 shadow-sm transition-colors hover:shadow-md">
-        <span class="text-3xl" aria-hidden="true">{item.icon}</span>
+      <div class="rounded-xl bg-[var(--color-surface)] p-6 shadow-sm transition-colors hover:shadow-md">
+        <Icon name={item.icon} class="h-8 w-8 text-primary" />
         <h3 class="mt-4 text-lg font-semibold text-gray-900">{item.title}</h3>
         <p class="mt-2 text-sm text-gray-600">{item.description}</p>
       </div>

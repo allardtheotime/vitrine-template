@@ -24,7 +24,9 @@ Formulaire de contact : fonction serverless Vercel (`api/contact.ts`), pas de we
 astro
 @astrojs/vercel
 tailwindcss
-@vercel/node   (types pour les fonctions serverless de /api)
+@vercel/node       (types pour les fonctions serverless de /api)
+@fontsource/inter  (police par défaut, auto-hébergée — cf. §11)
+lucide-static      (icônes SVG statiques, auto-hébergées — cf. §9bis)
 ```
 
 **Aucune autre dépendance n'est autorisée sans validation explicite.**
@@ -87,8 +89,11 @@ multi-pages : la simplicité et la vitesse de génération priment sur la démo.
 - `site.*` et `contact` : le formulaire et les coordonnées de contact se rendent
   **automatiquement** depuis `site.*` — ce n'est jamais une entrée de `sections{}`.
 - Noms de champs confirmés : `title`/`subtitle` (jamais `heading`/`subheading`) ;
-  les images sont des chaînes d'URL simples ; les services utilisent des icônes emoji ;
-  les clés de thème sont `primary`/`secondary`/`font`.
+  les images sont des chaînes d'URL simples ; les services utilisent des icônes **Lucide**
+  (nom de fichier `lucide-static` sans extension, ex. `"wrench"` — jamais d'emoji, cf. §9bis) ;
+  les clés de thème sont `primary`/`secondary`/`bg`/`surface`/`footer`/`font` (les quatre
+  dernières sont optionnelles, avec un fallback par défaut dans `global.css`/`BaseLayout.astro`
+  si absentes d'un ancien `content-draft.json`).
 - `meta.is_demo: true` déclenche la pop-up `DemoNotice`. Ne jamais le passer à `false`
   avant la version finale validée par le client.
 - **Donnée non fabricable absente** (téléphone, email...) : ne jamais afficher de texte
@@ -161,6 +166,22 @@ Si une variation est nécessaire, créer un nouveau composant avec un nom explic
 
 ---
 
+## 9bis. Icônes
+
+- Jamais d'emoji comme icône de service — rendu incohérent selon OS/navigateur, pas assez
+  professionnel pour un site vitrine. Utiliser le composant `Icon.astro`
+  (`src/components/ui/Icon.astro`), qui lit un SVG statique dans `lucide-static` au build
+  (`node_modules/lucide-static/icons/<name>.svg`) et l'injecte inline — zéro JS, zéro
+  requête réseau côté client.
+- Le nom d'icône (`sections.services.items[].icon`) doit correspondre exactement à un
+  fichier existant dans `lucide-static/icons/`. La liste curatée proposée dans Sveltia
+  (`public/admin/config.yml`, champ `icon`) couvre les besoins courants d'un site
+  artisan/TPE — l'étendre si un nom pertinent manque, après avoir vérifié qu'il existe
+  bien dans `node_modules/lucide-static/icons/`.
+- Si un nom d'icône invalide arrive malgré tout jusqu'au build, `Icon.astro` retombe sur
+  `circle-help` plutôt que de planter — mais ce n'est qu'un filet de sécurité, pas une
+  excuse pour ne pas vérifier le nom avant de l'écrire dans `content-draft.json`.
+
 ## 10. SEO — balises obligatoires (déjà dans BaseLayout.astro)
 
 `<title>`, `<meta name="description">`, `<meta name="robots">`, Open Graph (`og:title`,
@@ -172,8 +193,18 @@ dans une page — elles viennent de `BaseLayout.astro`.
 ## 11. Performance — règles non négociables
 
 - Zéro JavaScript côté client sauf : formulaire de contact, menu mobile, pop-up `DemoNotice`
-- Pas de police Google Fonts via `<link>` — `font-family` système ou `font-display: swap`
-  si une police externe est vraiment nécessaire
+- Pas de police Google Fonts via `<link>` (requête externe, contraire à l'auto-hébergement).
+  Inter est auto-hébergée via `@fontsource/inter` (import dans `global.css`, `font-display: swap`
+  déjà géré par le package) — c'est la police par défaut du template.
+  **Piège déjà rencontré** : ne jamais ajouter de règle `font-family: var(--font-family)`
+  isolée (ex. sur `html{}` dans `global.css`) — Tailwind Preflight applique déjà
+  `font-family: var(--font-family), system-ui, sans-serif` via `tailwind.config.cjs`
+  (`theme.fontFamily.sans`), fallback inclus. Une règle custom qui ne reprend que la
+  variable seule (sans fallback) écrase ce fallback et fait retomber tout le texte sur
+  la police par défaut du navigateur dès que `theme.font` ne correspond à aucune police
+  réellement chargée. Si un projet a besoin d'une police différente d'Inter, l'auto-héberger
+  de la même façon (import Fontsource ou `@font-face` avec fichiers dans `public/fonts/`) —
+  ne jamais se contenter de changer la valeur `theme.font` sans charger la police correspondante.
 - Pas d'animations CSS complexes — transitions simples uniquement, sauf palier L2/L3
   explicitement demandé dans `DESIGN.md`
 - PageSpeed mobile cible : 90+. Si une décision technique risque de faire descendre ce
@@ -199,6 +230,7 @@ dans une page — elles viennent de `BaseLayout.astro`.
 - Ne jamais utiliser `!important` dans le CSS
 - Ne jamais laisser `public/admin/config.yml` pointer vers le repo template ou un autre client
 - Ne jamais afficher de texte "à compléter"/"en attente" visible sur le site — cf. §4
+- Ne jamais utiliser un emoji comme icône de service — toujours `Icon.astro` + Lucide, cf. §9bis
 
 ---
 

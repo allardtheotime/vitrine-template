@@ -48,7 +48,10 @@ collections:
             fields:
               - { label: "Couleur primaire", name: "primary", widget: "color" }
               - { label: "Couleur secondaire", name: "secondary", widget: "color" }
-              - { label: "Police", name: "font", widget: "string" }
+              - { label: "Fond de page", name: "bg", widget: "color", required: false, hint: "Fond des sections alternées (défaut : #F9FAFB)" }
+              - { label: "Fond des cartes", name: "surface", widget: "color", required: false, hint: "Fond des cartes/sections claires (défaut : #FFFFFF)" }
+              - { label: "Fond du pied de page", name: "footer", widget: "color", required: false, hint: "Défaut : #111827 (gris foncé) — peut reprendre la couleur secondaire pour un rendu plus thémé" }
+              - { label: "Police", name: "font", widget: "string", hint: "Auto-hébergée : Inter (par défaut) via @fontsource/inter. Toute autre valeur retombe sur la police système — ne fonctionne visuellement que si cette police est aussi ajoutée en @font-face dans global.css." }
 
           - label: "Sections"
             name: "sections"
@@ -93,7 +96,49 @@ collections:
                     name: "items"
                     widget: "list"
                     fields:
-                      - { label: "Icône (emoji)", name: "icon", widget: "string" }
+                      - label: "Icône"
+                        name: "icon"
+                        widget: "select"
+                        hint: "Icônes Lucide (lucide.dev) — auto-hébergées, aucune requête externe"
+                        options:
+                          - { label: "Marteau", value: "hammer" }
+                          - { label: "Clé à molette", value: "wrench" }
+                          - { label: "Casque de chantier", value: "hard-hat" }
+                          - { label: "Mur de briques", value: "brick-wall" }
+                          - { label: "Grue / chantier", value: "construction" }
+                          - { label: "Perceuse", value: "drill" }
+                          - { label: "Pot de peinture", value: "paint-bucket" }
+                          - { label: "Rouleau de peinture", value: "paint-roller" }
+                          - { label: "Pinceau", value: "paintbrush" }
+                          - { label: "Règle / mesure", value: "ruler" }
+                          - { label: "Grille / carrelage", value: "layout-grid" }
+                          - { label: "Calques", value: "layers" }
+                          - { label: "Maison", value: "home" }
+                          - { label: "Porte", value: "door-open" }
+                          - { label: "Clôture", value: "fence" }
+                          - { label: "Arbres / jardin", value: "trees" }
+                          - { label: "Feuille / écologie", value: "leaf" }
+                          - { label: "Goutte d'eau", value: "droplet" }
+                          - { label: "Flamme / chauffage", value: "flame" }
+                          - { label: "Thermomètre", value: "thermometer" }
+                          - { label: "Vent / ventilation", value: "wind" }
+                          - { label: "Camion", value: "truck" }
+                          - { label: "Voiture", value: "car" }
+                          - { label: "Bouclier vérifié", value: "shield-check" }
+                          - { label: "Coche / validé", value: "check-circle" }
+                          - { label: "Presse-papier validé", value: "clipboard-check" }
+                          - { label: "Éclair / électricité", value: "zap" }
+                          - { label: "Lampe", value: "lamp" }
+                          - { label: "Réglages", value: "cog" }
+                          - { label: "Boîte à outils", value: "toolbox" }
+                          - { label: "Hache", value: "axe" }
+                          - { label: "Pelle", value: "shovel" }
+                          - { label: "Téléphone", value: "phone" }
+                          - { label: "Email", value: "mail" }
+                          - { label: "Localisation", value: "map-pin" }
+                          - { label: "Horloge", value: "clock" }
+                          - { label: "Étoile", value: "star" }
+                          - { label: "Palette", value: "palette" }
                       - { label: "Titre", name: "title", widget: "string" }
                       - { label: "Description", name: "description", widget: "text" }
 
