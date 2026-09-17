@@ -26,7 +26,7 @@ const { siteName, links, ctaText, ctaHref = '#contact' } = Astro.props;
     {ctaText && (
       <a
         href={ctaHref}
-        class="hidden rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90 md:inline-flex"
+        class="hidden items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90 md:inline-flex"
       >
         {ctaText}
       </a>
@@ -54,7 +54,7 @@ const { siteName, links, ctaText, ctaHref = '#contact' } = Astro.props;
     ))}
     {ctaText && (
       <li>
-        <a href={ctaHref} class="block rounded-lg bg-primary px-3 py-3 text-center text-sm font-semibold text-white">
+        <a href={ctaHref} class="flex items-center justify-center rounded-lg bg-primary px-3 py-3 text-sm font-semibold text-white">
           {ctaText}
         </a>
       </li>
