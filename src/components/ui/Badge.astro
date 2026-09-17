@@ -1,4 +1,9 @@
 ---
+// Le fond teinté utilise color-mix() plutôt que l'opacité Tailwind (bg-primary/10) :
+// nos couleurs de thème sont des références à des variables CSS (var(--color-primary)),
+// pas des couleurs RGB natives — Tailwind ne peut pas leur appliquer un modificateur
+// d'opacité (/10) et rendait un fond totalement transparent. color-mix() fonctionne
+// avec n'importe quelle valeur de couleur, y compris une var() dynamique.
 export interface Props {
   text: string;
   color?: 'primary' | 'secondary' | 'neutral';
@@ -6,13 +11,22 @@ export interface Props {
 
 const { text, color = 'primary' } = Astro.props;
 
-const colors = {
-  primary: 'bg-primary/10 text-primary',
-  secondary: 'bg-secondary/10 text-secondary',
-  neutral: 'bg-gray-100 text-gray-700',
+const textClass = {
+  primary: 'text-primary',
+  secondary: 'text-[var(--color-secondary)]',
+  neutral: 'text-[var(--color-text-muted)]',
+};
+
+const bgColor = {
+  primary: 'color-mix(in srgb, var(--color-primary) 12%, transparent)',
+  secondary: 'color-mix(in srgb, var(--color-secondary) 12%, transparent)',
+  neutral: 'var(--color-bg)',
 };
 ---
 
-<span class={`inline-block rounded-full px-3 py-1 text-sm font-medium ${colors[color]}`}>
+<span
+  class={`inline-block rounded-full px-3 py-1 text-sm font-medium ${textClass[color]}`}
+  style={`background-color: ${bgColor[color]}`}
+>
   {text}
 </span>
