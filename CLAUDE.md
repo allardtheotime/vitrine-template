@@ -141,7 +141,10 @@ Si une variation est nécessaire, créer un nouveau composant avec un nom explic
 - Zéro CSS custom sauf dans `styles/global.css` pour les variables CSS
 - Mobile-first obligatoire : écrire d'abord le style mobile, puis `md:` et `lg:`
 - Breakpoints utilisés : `sm` (640px), `md` (768px), `lg` (1024px) uniquement
-- Zones tactiles ≥ 44×44px (déjà appliqué globalement dans `global.css`)
+- Zones tactiles ≥ 44×44px. `global.css` applique `min-height: 44px` globalement sur
+  `button, a, input, textarea`, mais **pas** `min-width` — un bouton étroit avec juste
+  une icône (ex. le hamburger mobile) peut donc rester en dessous de 44px de large.
+  Vérifier/ajouter `min-w-[44px]` au cas par cas sur les boutons icône-seule.
 
 ---
 

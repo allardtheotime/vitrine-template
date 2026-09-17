@@ -63,7 +63,9 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Clients | Statut |
 |-----------|---------|-------|-------|---------|--------|
-| — | — | — | — | — | — |
+| ZoneIntervention | `src/components/sections/ZoneIntervention.astro` | `title`, `text`, `areas[]` (noms de villes) | Section dédiée à la zone géographique desservie, avec badges — cf. DESIGN.md quand le client a une zone d'intervention à mettre en avant | detongre-construction-virton | Client |
+| Realisations | `src/components/sections/Realisations.astro` | `title`, `items[]{image, alt, caption?}` | Galerie de photos de chantier. Conditionnelle : à ne rendre que si `items.length > 0` (jamais de galerie vide ni de visuels stock) | detongre-construction-virton | Client |
+| MobileCTABar | `src/components/ui/MobileCTABar.astro` | `ctaText`, `ctaHref?`, `phone?` | Barre CTA fixe en bas d'écran, mobile/tablette uniquement (`lg:hidden`) — bouton "Appeler" absent tant que `phone` n'est pas fourni | detongre-construction-virton | Client |
 
 ---
 
