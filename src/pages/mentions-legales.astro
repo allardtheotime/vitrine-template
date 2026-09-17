@@ -1,104 +1,50 @@
 ---
-import content from '../content.json';
-import PageLayout from '../layouts/PageLayout.astro';
-import SectionWrapper from '../components/ui/SectionWrapper.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import content from '../content-draft.json';
 
-const { site, theme, navigation, mode } = content;
-const isDemo = Boolean((content as { meta?: { is_demo?: boolean } }).meta?.is_demo);
+const { site, theme } = content;
 
-interface LegalSite {
-  legal_name?: string;
-  legal_form?: string;
-  bce_number?: string;
-  vat_number?: string;
-  address?: string;
-  phone?: string;
-  email?: string;
-  regulated_profession?: boolean;
-  regulatory_authority?: string;
-  license_number?: string;
-}
-
-const legalSite = site as LegalSite;
-const FALLBACK = 'Information à compléter';
-const field = (value?: string) => (value && value.trim() !== '' ? value : FALLBACK);
-const isRegulatedProfession = legalSite.regulated_profession === true;
+const navLinks = [{ label: 'Retour au site', href: '/' }];
 ---
 
-<PageLayout
-  title="Mentions légales"
-  description={`Mentions légales de ${site.name}`}
-  site={site}
-  theme={theme}
-  isDemo={isDemo}
-  navigation={navigation}
-  mode={mode}
+<BaseLayout
+  siteName={site.name}
+  tagline="Mentions légales"
+  primaryColor={theme.primary}
+  secondaryColor={theme.secondary}
+  fontFamily={theme.font}
+  navLinks={navLinks}
+  phone={site.phone}
+  email={site.email}
+  address={site.address}
+  legalName={site.legal_name}
 >
-  <SectionWrapper bg="white">
-    <div class="max-w-3xl mx-auto prose prose-gray">
-      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-8">Mentions légales</h1>
+  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold text-gray-900">Mentions légales</h1>
 
-      <section class="mb-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-3">Éditeur du site</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Raison sociale : <strong>{field(legalSite.legal_name)}</strong><br />
-          Forme juridique : {field(legalSite.legal_form)}<br />
-          Numéro BCE : {field(legalSite.bce_number)}<br />
-          Numéro de TVA : {field(legalSite.vat_number)}<br />
-          Adresse : {field(legalSite.address)}<br />
-          Téléphone : {legalSite.phone && legalSite.phone.trim() !== ''
-            ? <a href={`tel:${legalSite.phone.replace(/\s/g, '')}`} class="text-primary hover:underline">{legalSite.phone}</a>
-            : FALLBACK}<br />
-          Email : {legalSite.email && legalSite.email.trim() !== ''
-            ? <a href={`mailto:${legalSite.email}`} class="text-primary hover:underline">{legalSite.email}</a>
-            : FALLBACK}
-        </p>
-      </section>
+    <div class="mt-8 space-y-6 text-sm text-gray-700">
+      <div>
+        <h2 class="font-semibold text-gray-900">Éditeur du site</h2>
+        <p>{site.legal_name || site.name}</p>
+        {site.legal_form && <p>{site.legal_form}</p>}
+        {site.bce_number && <p>Numéro BCE : {site.bce_number}</p>}
+        {site.vat_number && <p>Numéro de TVA : {site.vat_number}</p>}
+        {site.address && <p>{site.address}</p>}
+        {site.regulated_profession && site.regulatory_authority && (
+          <p>Profession réglementée — {site.regulatory_authority}{site.license_number ? ` (n° ${site.license_number})` : ''}</p>
+        )}
+      </div>
 
-      {isRegulatedProfession && (
-        <section class="mb-8">
-          <h2 class="text-xl font-bold text-gray-800 mb-3">Autorité de tutelle</h2>
-          <p class="text-gray-600 leading-relaxed">
-            Autorité de tutelle : {field(legalSite.regulatory_authority)}<br />
-            Numéro d'agrément : {field(legalSite.license_number)}
-          </p>
-        </section>
-      )}
+      <div>
+        <h2 class="font-semibold text-gray-900">Contact</h2>
+        {site.email && <p>{site.email}</p>}
+        {site.phone && <p>{site.phone}</p>}
+      </div>
 
-      <section class="mb-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-3">Hébergeur</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Hébergeur : Netlify, Inc. — 44 Montgomery Street, Suite 300, San Francisco, CA 94104, USA
-        </p>
-      </section>
-
-      <section class="mb-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-3">Propriété intellectuelle</h2>
-        <p class="text-gray-600 leading-relaxed">
-          L'ensemble des contenus présents sur ce site (textes, images, logos) est la propriété exclusive de {site.name},
-          sauf mentions contraires. Toute reproduction, même partielle, est interdite sans autorisation préalable.
-        </p>
-      </section>
-
-      <section class="mb-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-3">Données personnelles</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Les informations recueillies via le formulaire de contact sont utilisées uniquement pour répondre à vos demandes.
-          Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données.
-          Pour exercer ces droits, contactez-nous à l'adresse : <a href={`mailto:${site.email}`} class="text-primary hover:underline">{site.email}</a>.
-        </p>
-      </section>
-
-      <section class="mb-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-3">Cookies</h2>
-        <p class="text-gray-600 leading-relaxed">
-          Ce site n'utilise pas de cookies de traçage ou de cookies tiers à des fins publicitaires.
-        </p>
-      </section>
-
-      <div class="mt-10">
-        <a href="/" class="text-primary font-medium hover:underline">&larr; Retour à l'accueil</a>
+      <div>
+        <h2 class="font-semibold text-gray-900">Hébergement</h2>
+        <p>Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.</p>
       </div>
     </div>
-  </SectionWrapper>
-</PageLayout>
+  </section>
+</BaseLayout>

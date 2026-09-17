@@ -1,18 +1,18 @@
 ---
-interface Props {
+export interface Props {
   text: string;
-  variant?: 'primary' | 'secondary' | 'gray';
+  color?: 'primary' | 'secondary' | 'neutral';
 }
 
-const { text, variant = 'primary' } = Astro.props;
+const { text, color = 'primary' } = Astro.props;
 
-const variantClass = {
-  primary: 'bg-blue-100 text-primary',
-  secondary: 'bg-amber-100 text-amber-800',
-  gray: 'bg-gray-100 text-gray-600',
-}[variant];
+const colors = {
+  primary: 'bg-primary/10 text-primary',
+  secondary: 'bg-secondary/10 text-secondary',
+  neutral: 'bg-gray-100 text-gray-700',
+};
 ---
 
-<span class={`inline-block text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full ${variantClass}`}>
+<span class={`inline-block rounded-full px-3 py-1 text-sm font-medium ${colors[color]}`}>
   {text}
 </span>

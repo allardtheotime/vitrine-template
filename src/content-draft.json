@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "is_demo": true,
+    "generated_at": ""
+  },
+  "site": {
+    "name": "Entreprise Template",
+    "tagline": "Votre slogan ici",
+    "sector": "",
+    "phone": "",
+    "email": "",
+    "address": "",
+    "hours": "Lun–Ven 9h–18h",
+    "legal_name": "",
+    "legal_form": "",
+    "bce_number": "",
+    "vat_number": "",
+    "regulated_profession": false,
+    "regulatory_authority": "",
+    "license_number": ""
+  },
+  "theme": {
+    "primary": "#1D4ED8",
+    "secondary": "#F59E0B",
+    "font": "Inter"
+  },
+  "sections": {
+    "hero": {
+      "visible": true,
+      "title": "Titre principal accrocheur",
+      "subtitle": "Sous-titre qui explique la valeur en une phrase courte.",
+      "cta_text": "Nous contacter",
+      "cta_link": "#contact",
+      "image": ""
+    },
+    "about": {
+      "visible": true,
+      "title": "À propos de nous",
+      "subtitle": "",
+      "text": "Présentation de l'entreprise en deux ou trois phrases. Expérience, valeurs, engagement.",
+      "image": "",
+      "stats": [
+        { "value": "10+", "label": "Ans d'expérience" },
+        { "value": "500+", "label": "Clients satisfaits" }
+      ]
+    },
+    "services": {
+      "visible": true,
+      "title": "Nos services",
+      "subtitle": "",
+      "items": [
+        { "icon": "🔧", "title": "Service 1", "description": "Description courte du premier service proposé." },
+        { "icon": "⚡", "title": "Service 2", "description": "Description courte du deuxième service proposé." },
+        { "icon": "✅", "title": "Service 3", "description": "Description courte du troisième service proposé." }
+      ]
+    },
+    "testimonials": {
+      "visible": true,
+      "title": "Ce que disent nos clients",
+      "items": [
+        { "name": "Marie D.", "text": "Excellent service, je recommande vivement !", "rating": 5 },
+        { "name": "Jean P.", "text": "Rapide, sérieux et professionnel.", "rating": 5 }
+      ]
+    }
+  }
+}

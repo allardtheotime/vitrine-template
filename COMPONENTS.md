@@ -19,8 +19,8 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| Navbar | `src/components/layout/Navbar.astro` | `siteName`, `links[]`, `ctaText`, `ctaLink`, `primaryColor` | Navigation principale, fixe en haut, hamburger mobile | Boilerplate |
-| Footer | `src/components/layout/Footer.astro` | `siteName`, `phone`, `email`, `links[]` | Pied de page avec infos légales | Boilerplate |
+| Navbar | `src/components/layout/Navbar.astro` | `siteName`, `links[]`, `ctaText?`, `ctaHref?` | Navigation principale, sticky, menu hamburger mobile | Boilerplate |
+| Footer | `src/components/layout/Footer.astro` | `siteName`, `phone?`, `email?`, `address?`, `legalName?` | Pied de page ; omet chaque ligne dont la donnée est absente (jamais de "à compléter") | Boilerplate |
 
 ---
 
@@ -28,8 +28,7 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| BaseLayout | `src/layouts/BaseLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `isDemo?` | Wrapper pour mode one-page. Rend `<DemoNotice isDemo={isDemo} />` en fin de `<body>` | Boilerplate |
-| PageLayout | `src/layouts/PageLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `title`, `isDemo?` | Wrapper pour chaque page en mode multi-pages. Transmet `isDemo` à `BaseLayout` | Boilerplate |
+| BaseLayout | `src/layouts/BaseLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `fontFamily`, `navLinks[]`, `phone?`, `email?`, `address?`, `legalName?`, `isDemo?` | Layout unique (site one-page). Injecte les variables CSS de thème, rend Navbar/Footer/DemoNotice | Boilerplate |
 
 ---
 
@@ -37,12 +36,11 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| Hero | `src/components/sections/Hero.astro` | `title`, `subtitle`, `ctaText`, `ctaLink`, `bgImage?` | Section d'accroche, toujours en premier | Boilerplate |
-| Services | `src/components/sections/Services.astro` | `title`, `items[]{icon, title, description}` | Grille 3 colonnes de services | Boilerplate |
-| About | `src/components/sections/About.astro` | `title`, `text`, `image?`, `stats[]{value, label}` | Présentation de l'entreprise + chiffres clés | Boilerplate |
-| Testimonials | `src/components/sections/Testimonials.astro` | `items[]{name, text, rating}` | Grille d'avis clients avec étoiles | Boilerplate |
-| CTABanner | `src/components/sections/CTABanner.astro` | `title`, `subtitle`, `buttonText`, `ctaLink` | Bandeau d'appel à l'action, fond couleur primaire | Boilerplate |
-| Contact | `src/components/sections/Contact.astro` | `phone`, `email`, `address`, `hours`, `web3formsKey`, `siteName` | Formulaire Web3Forms + infos de contact | Boilerplate |
+| Hero | `src/components/sections/Hero.astro` | `title`, `subtitle?`, `ctaText?`, `ctaLink?`, `image?` | Section d'accroche, toujours en premier | Boilerplate |
+| About | `src/components/sections/About.astro` | `title`, `subtitle?`, `text`, `image?`, `stats?[]{value, label}` | Présentation de l'entreprise + chiffres clés | Boilerplate |
+| Services | `src/components/sections/Services.astro` | `title`, `subtitle?`, `items[]{icon, title, description}` | Grille de services (2-3 colonnes) | Boilerplate |
+| Testimonials | `src/components/sections/Testimonials.astro` | `title?`, `items[]{name, text, rating}` | Grille d'avis clients avec étoiles | Boilerplate |
+| Contact | `src/components/sections/Contact.astro` | `phone?`, `email?`, `address?`, `hours?` | Coordonnées + formulaire vers `/api/contact`. Rendue automatiquement depuis `site.*`, jamais une entrée de `sections{}` | Boilerplate |
 
 ---
 
@@ -50,10 +48,10 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| Button | `src/components/ui/Button.astro` | `variant` (primary/secondary/ghost), `size` (sm/md/lg), `href?`, `type?` | Bouton réutilisable partout | Boilerplate |
+| Button | `src/components/ui/Button.astro` | `variant?` (primary/secondary/ghost), `size?` (sm/md/lg), `href?`, `type?`, `class?` | Bouton/lien réutilisable partout | Boilerplate |
 | SectionWrapper | `src/components/ui/SectionWrapper.astro` | `id?`, `bg?` (bg-white/bg-gray-50), `class?` | Conteneur de section avec padding et max-width | Boilerplate |
-| Badge | `src/components/ui/Badge.astro` | `text`, `color?` | Étiquette colorée pour labels et catégories | Boilerplate |
-| DemoNotice | `src/components/ui/DemoNotice.astro` | `isDemo?` (boolean, défaut `false`) | Pop-up modale affichée uniquement quand `isDemo` est vrai, prévient que le contenu est une démo générée automatiquement. Bouton "J'ai compris" qui masque la modale pour le reste de la session via `sessionStorage` (réapparaît à une nouvelle session). Intégrée dans `BaseLayout.astro` (rendu dans `<body>`) et exposée via `PageLayout.astro` → toutes les pages en héritent automatiquement. Contient un `<script>` client — dérogation ciblée à la règle "zéro JS" de `CLAUDE.md` §11, requise par la fonctionnalité elle-même. | Boilerplate |
+| Badge | `src/components/ui/Badge.astro` | `text`, `color?` (primary/secondary/neutral) | Étiquette colorée pour labels et catégories | Boilerplate |
+| DemoNotice | `src/components/ui/DemoNotice.astro` | `isDemo?` (boolean, défaut `false`) | Pop-up affichée quand `meta.is_demo` est vrai, masquée pour la session via `sessionStorage` | Boilerplate |
 
 ---
 
@@ -86,5 +84,6 @@ Chaque composant est documenté avec :
 |-----------|----------------|
 | Slider/Carousel | Nécessite du JS complexe, nuit aux performances, remplacer par une grille statique |
 | Carte Google Maps intégrée | Nécessite une clé API payante, remplacer par un lien Google Maps |
-| Espace client / login | Hors scope vitrine statique, nécessite un backend |
-| Blog avec BDD | Hors scope, nécessite un CMS ou une BDD |
+| Espace client / login | Hors scope vitrine statique |
+| Blog avec BDD | Hors scope — content-draft.json n'est pas fait pour du contenu illimité |
+| Mode multi-pages | Complexité non justifiée pour une démo — le site reste one-page |

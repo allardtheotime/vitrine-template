@@ -1,5 +1,8 @@
 ---
-interface Props {
+// Pop-up affichée uniquement quand meta.is_demo est vrai (content-draft.json).
+// Dérogation ciblée à la règle "zéro JS client" : nécessaire à la fonctionnalité,
+// contenue à ce seul composant.
+export interface Props {
   isDemo?: boolean;
 }
 
@@ -7,43 +10,38 @@ const { isDemo = false } = Astro.props;
 ---
 
 {isDemo && (
-  <>
-    <div
-      id="demo-notice"
-      class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/60"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="demo-notice-title"
-    >
-      <div class="bg-white rounded-2xl shadow-lg max-w-md w-full p-6 sm:p-8">
-        <h2 id="demo-notice-title" class="text-lg font-bold text-gray-900 mb-3">
-          Aperçu de démonstration
-        </h2>
-        <p class="text-sm text-gray-600 leading-relaxed mb-6">
-          Ceci est un aperçu généré automatiquement à titre de démonstration. Certaines
-          informations (textes, horaires, avis...) sont fictives et seront remplacées par les
-          vraies données avant la mise en ligne définitive.
-        </p>
-        <button id="demo-notice-dismiss" type="button" class="btn-primary w-full text-sm py-3">
-          J'ai compris
-        </button>
-      </div>
+  <div
+    id="demo-notice"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+  >
+    <div class="max-w-md rounded-xl bg-white p-6 shadow-xl">
+      <p class="mb-4 text-sm text-gray-700">
+        Ce site est une démonstration générée automatiquement à titre d'exemple.
+        Certains contenus sont provisoires et seront confirmés avec le client avant mise en ligne définitive.
+      </p>
+      <button
+        id="demo-notice-dismiss"
+        class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+      >
+        J'ai compris
+      </button>
     </div>
+  </div>
+)}
 
-    <script>
-      const STORAGE_KEY = 'demo-notice-dismissed';
-      const notice = document.getElementById('demo-notice');
+{isDemo && (
+  <script>
+    const KEY = 'demo-notice-dismissed';
+    const notice = document.getElementById('demo-notice');
+    const dismissBtn = document.getElementById('demo-notice-dismiss');
 
-      if (notice) {
-        if (sessionStorage.getItem(STORAGE_KEY) === '1') {
-          notice.remove();
-        } else {
-          document.getElementById('demo-notice-dismiss')?.addEventListener('click', () => {
-            sessionStorage.setItem(STORAGE_KEY, '1');
-            notice.remove();
-          });
-        }
-      }
-    </script>
-  </>
+    if (notice && sessionStorage.getItem(KEY) === 'true') {
+      notice.remove();
+    }
+
+    dismissBtn?.addEventListener('click', () => {
+      sessionStorage.setItem(KEY, 'true');
+      notice?.remove();
+    });
+  </script>
 )}

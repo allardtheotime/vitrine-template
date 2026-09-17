@@ -1,21 +1,36 @@
 ---
-import '../styles/global.css';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
 import DemoNotice from '../components/ui/DemoNotice.astro';
+import '../styles/global.css';
 
-interface Props {
-  title: string;
-  description?: string;
+export interface Props {
   siteName: string;
-  theme: {
-    primary: string;
-    secondary: string;
-    font: string;
-  };
+  tagline: string;
+  primaryColor: string;
+  secondaryColor: string;
+  fontFamily: string;
+  navLinks: { label: string; href: string }[];
+  phone?: string;
+  email?: string;
+  address?: string;
+  legalName?: string;
   isDemo?: boolean;
 }
 
-const { title, description = '', siteName, theme, isDemo = false } = Astro.props;
-const pageTitle = `${title} | ${siteName}`;
+const {
+  siteName,
+  tagline,
+  primaryColor,
+  secondaryColor,
+  fontFamily,
+  navLinks,
+  phone,
+  email,
+  address,
+  legalName,
+  isDemo = false,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -23,24 +38,28 @@ const pageTitle = `${title} | ${siteName}`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <title>{pageTitle}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href={`https://fonts.googleapis.com/css2?family=${theme.font.replace(' ', '+')}:wght@400;500;600;700&display=swap`}
-      rel="stylesheet"
-    />
-    <style define:vars={{ colorPrimary: theme.primary, colorSecondary: theme.secondary, fontBody: theme.font }}>
+    <title>{siteName} — {tagline}</title>
+    <meta name="description" content={tagline} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={siteName} />
+    <meta property="og:description" content={tagline} />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href={Astro.url} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style define:vars={{ colorPrimary: primaryColor, colorSecondary: secondaryColor, fontFamily }}>
       :root {
         --color-primary: var(--colorPrimary);
         --color-secondary: var(--colorSecondary);
-        --font-body: var(--fontBody), system-ui, sans-serif;
+        --font-family: var(--fontFamily);
       }
     </style>
   </head>
-  <body>
-    <slot />
+  <body class="text-gray-900 antialiased">
+    <Navbar siteName={siteName} links={navLinks} ctaText="Devis gratuit" ctaHref="#contact" />
+    <main>
+      <slot />
+    </main>
+    <Footer siteName={siteName} phone={phone} email={email} address={address} legalName={legalName} />
     <DemoNotice isDemo={isDemo} />
   </body>
 </html>

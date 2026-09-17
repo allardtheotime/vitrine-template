@@ -1,0 +1,113 @@
+backend:
+  name: github
+  # IMPORTANT : à remplacer par le repo GitHub dédié du client (ex. dupont-sanitaire-namur)
+  # lors du clonage par le skill build-site-vitrine — ne jamais laisser pointer vers le template.
+  repo: <owner>/<repo-client>
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "site"
+    label: "Contenu du site"
+    files:
+      - name: "content"
+        label: "Contenu"
+        file: "src/content-draft.json"
+        fields:
+          - label: "Démo"
+            name: "meta"
+            widget: "object"
+            fields:
+              - { label: "Site de démonstration", name: "is_demo", widget: "boolean", default: true }
+              - { label: "Généré le", name: "generated_at", widget: "string", required: false }
+
+          - label: "Entreprise"
+            name: "site"
+            widget: "object"
+            fields:
+              - { label: "Nom commercial", name: "name", widget: "string" }
+              - { label: "Slogan", name: "tagline", widget: "string" }
+              - { label: "Secteur", name: "sector", widget: "string", required: false }
+              - { label: "Téléphone", name: "phone", widget: "string", required: false }
+              - { label: "Email", name: "email", widget: "string", required: false }
+              - { label: "Adresse", name: "address", widget: "string", required: false }
+              - { label: "Horaires", name: "hours", widget: "string", required: false }
+              - { label: "Nom légal", name: "legal_name", widget: "string", required: false }
+              - { label: "Forme juridique", name: "legal_form", widget: "string", required: false }
+              - { label: "Numéro BCE", name: "bce_number", widget: "string", required: false }
+              - { label: "Numéro de TVA", name: "vat_number", widget: "string", required: false }
+              - { label: "Profession réglementée", name: "regulated_profession", widget: "boolean", default: false }
+              - { label: "Autorité de régulation", name: "regulatory_authority", widget: "string", required: false }
+              - { label: "Numéro de licence", name: "license_number", widget: "string", required: false }
+
+          - label: "Thème"
+            name: "theme"
+            widget: "object"
+            fields:
+              - { label: "Couleur primaire", name: "primary", widget: "color" }
+              - { label: "Couleur secondaire", name: "secondary", widget: "color" }
+              - { label: "Police", name: "font", widget: "string" }
+
+          - label: "Sections"
+            name: "sections"
+            widget: "object"
+            fields:
+              - label: "Hero"
+                name: "hero"
+                widget: "object"
+                fields:
+                  - { label: "Visible", name: "visible", widget: "boolean", default: true }
+                  - { label: "Titre", name: "title", widget: "string" }
+                  - { label: "Sous-titre", name: "subtitle", widget: "string", required: false }
+                  - { label: "Texte du bouton", name: "cta_text", widget: "string", required: false }
+                  - { label: "Lien du bouton", name: "cta_link", widget: "string", default: "#contact" }
+                  - { label: "Image", name: "image", widget: "image", required: false }
+
+              - label: "À propos"
+                name: "about"
+                widget: "object"
+                fields:
+                  - { label: "Visible", name: "visible", widget: "boolean", default: true }
+                  - { label: "Titre", name: "title", widget: "string" }
+                  - { label: "Sous-titre", name: "subtitle", widget: "string", required: false }
+                  - { label: "Texte", name: "text", widget: "text" }
+                  - { label: "Image", name: "image", widget: "image", required: false }
+                  - label: "Chiffres clés"
+                    name: "stats"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - { label: "Valeur", name: "value", widget: "string" }
+                      - { label: "Libellé", name: "label", widget: "string" }
+
+              - label: "Services"
+                name: "services"
+                widget: "object"
+                fields:
+                  - { label: "Visible", name: "visible", widget: "boolean", default: true }
+                  - { label: "Titre", name: "title", widget: "string" }
+                  - { label: "Sous-titre", name: "subtitle", widget: "string", required: false }
+                  - label: "Liste des services"
+                    name: "items"
+                    widget: "list"
+                    fields:
+                      - { label: "Icône (emoji)", name: "icon", widget: "string" }
+                      - { label: "Titre", name: "title", widget: "string" }
+                      - { label: "Description", name: "description", widget: "text" }
+
+              - label: "Témoignages"
+                name: "testimonials"
+                widget: "object"
+                fields:
+                  - { label: "Visible", name: "visible", widget: "boolean", default: true }
+                  - { label: "Titre", name: "title", widget: "string", required: false }
+                  - label: "Avis"
+                    name: "items"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - { label: "Nom", name: "name", widget: "string" }
+                      - { label: "Texte", name: "text", widget: "text" }
+                      - { label: "Note (1 à 5)", name: "rating", widget: "number", min: 1, max: 5, default: 5 }

@@ -1,26 +1,15 @@
 ---
-interface Props {
+export interface Props {
   id?: string;
+  bg?: 'bg-white' | 'bg-gray-50';
   class?: string;
-  bg?: 'white' | 'gray' | 'primary' | 'dark';
 }
 
-const {
-  id,
-  class: className = '',
-  bg = 'white',
-} = Astro.props;
-
-const bgClass = {
-  white: 'bg-white',
-  gray: 'bg-gray-50',
-  primary: 'bg-primary text-white',
-  dark: 'bg-gray-900 text-white',
-}[bg];
+const { id, bg = 'bg-white', class: className = '' } = Astro.props;
 ---
 
-<section id={id} class={`py-16 md:py-24 ${bgClass} ${className}`}>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id={id} class={`${bg} py-16 md:py-24 ${className}`}>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
     <slot />
   </div>
 </section>

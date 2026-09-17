@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{astro,html,js,jsx,ts,tsx,vue,svelte}'],
+  content: ['./src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}'],
   theme: {
     extend: {
       colors: {
@@ -8,7 +8,7 @@ module.exports = {
         secondary: 'var(--color-secondary)',
       },
       fontFamily: {
-        sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-family)', 'system-ui', 'sans-serif'],
       },
     },
   },
