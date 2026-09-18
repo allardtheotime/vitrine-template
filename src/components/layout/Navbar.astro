@@ -70,4 +70,14 @@ const { siteName, links, ctaText, ctaHref = '#contact' } = Astro.props;
     const isOpen = menu?.classList.toggle('hidden') === false;
     toggle.setAttribute('aria-expanded', String(isOpen));
   });
+
+  // Referme le menu après un clic sur n'importe quel lien à l'intérieur
+  // (ancre de section, tel:, mailto:...) — sinon le menu reste ouvert
+  // par-dessus le contenu même quand le lien a bien fait son effet.
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      toggle?.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>
