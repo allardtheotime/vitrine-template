@@ -18,20 +18,20 @@ const { phone, email, address, hours } = Astro.props;
 <SectionWrapper id="contact" bg="surface">
   <div class="grid gap-10 md:grid-cols-2">
     <div>
-      <h2 class="text-3xl font-bold text-gray-900">Contact</h2>
-      <p class="mt-2 text-gray-600">Une question, un projet ? Écrivez-nous, nous répondons rapidement.</p>
+      <h2 class="text-[var(--color-text)]">Contact</h2>
+      <p class="mt-2 text-[var(--color-text-muted)]">Une question, un projet ? Écrivez-nous, nous répondons rapidement.</p>
 
-      <dl class="mt-6 space-y-2 text-sm text-gray-700">
+      <dl class="mt-6 space-y-2 text-sm text-[var(--color-text)]">
         {phone && (
           <div>
             <dt class="sr-only">Téléphone</dt>
-            <dd><a href={`tel:${phone.replace(/\s+/g, '')}`} class="hover:text-primary">{phone}</a></dd>
+            <dd><a href={`tel:${phone.replace(/\s+/g, '')}`} class="inline-flex items-center hover:text-primary">{phone}</a></dd>
           </div>
         )}
         {email && (
           <div>
             <dt class="sr-only">Email</dt>
-            <dd><a href={`mailto:${email}`} class="hover:text-primary">{email}</a></dd>
+            <dd><a href={`mailto:${email}`} class="inline-flex items-center hover:text-primary">{email}</a></dd>
           </div>
         )}
         {address && (
@@ -49,26 +49,33 @@ const { phone, email, address, hours } = Astro.props;
       </dl>
     </div>
 
-    <form id="contact-form" class="space-y-4 rounded-xl bg-[var(--color-bg)] p-6 shadow-sm ring-1 ring-black/5">
+    <form id="contact-form" class="space-y-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+      <!-- Anti-spam : champ piège invisible pour les humains, souvent rempli par les
+           robots qui remplissent tous les champs sans exécuter le CSS — cf. api/contact.ts -->
+      <div class="hidden" aria-hidden="true">
+        <label for="company">Ne pas remplir ce champ</label>
+        <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <input type="hidden" id="form-loaded-at" name="loaded_at" value="" />
       <div>
-        <label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+        <label for="name" class="block text-sm font-medium text-[var(--color-text)]">Nom</label>
         <input
           id="name" name="name" type="text" required
-          class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          class="mt-1 w-full rounded border border-[var(--color-border)] px-3 py-2 focus:border-[var(--color-focus)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
         />
       </div>
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <label for="email" class="block text-sm font-medium text-[var(--color-text)]">Email</label>
         <input
           id="email" name="email" type="email" required
-          class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          class="mt-1 w-full rounded border border-[var(--color-border)] px-3 py-2 focus:border-[var(--color-focus)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
         />
       </div>
       <div>
-        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+        <label for="message" class="block text-sm font-medium text-[var(--color-text)]">Message</label>
         <textarea
           id="message" name="message" required rows="4"
-          class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          class="mt-1 w-full rounded border border-[var(--color-border)] px-3 py-2 focus:border-[var(--color-focus)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
         ></textarea>
       </div>
 
@@ -88,6 +95,9 @@ const { phone, email, address, hours } = Astro.props;
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const successMsg = document.getElementById('contact-form-success');
   const errorMsg = document.getElementById('contact-form-error');
+  const loadedAtInput = document.getElementById('form-loaded-at') as HTMLInputElement | null;
+
+  if (loadedAtInput) loadedAtInput.value = String(Date.now());
 
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();

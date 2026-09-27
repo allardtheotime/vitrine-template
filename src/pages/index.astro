@@ -5,8 +5,9 @@ import About from '../components/sections/About.astro';
 import Services from '../components/sections/Services.astro';
 import Testimonials from '../components/sections/Testimonials.astro';
 import Contact from '../components/sections/Contact.astro';
-import content from '../content-draft.json';
+import { getSiteContent } from '../lib/content';
 
+const content = await getSiteContent();
 const { site, theme, sections, meta } = content;
 
 // Nav : une entrée par section générable visible + Contact, toujours présent.
@@ -26,18 +27,27 @@ const navLinks = [
 
 <BaseLayout
   siteName={site.name}
+  logo={site.logo}
+  ogImage={site.og_image}
   tagline={site.tagline}
   primaryColor={theme.primary}
+  primaryHoverColor={theme.primary_hover}
   secondaryColor={theme.secondary}
   fontFamily={theme.font}
+  fontFamilyDisplay={theme.font_display}
   bgColor={theme.bg}
   surfaceColor={theme.surface}
   footerColor={theme.footer}
+  textColor={theme.text}
+  textMutedColor={theme.text_muted}
+  borderColor={theme.border}
+  focusColor={theme.focus}
   navLinks={navLinks}
   phone={site.phone}
   email={site.email}
   address={site.address}
   legalName={site.legal_name}
+  facebook={site.facebook}
   isDemo={meta.is_demo}
 >
   {sections.hero?.visible && (
@@ -47,6 +57,7 @@ const navLinks = [
       ctaText={sections.hero.cta_text}
       ctaLink={sections.hero.cta_link}
       image={sections.hero.image}
+      imageAlt={sections.hero.image_alt}
     />
   )}
 
@@ -56,6 +67,7 @@ const navLinks = [
       subtitle={sections.about.subtitle}
       text={sections.about.text}
       image={sections.about.image}
+      imageAlt={sections.about.image_alt}
       stats={sections.about.stats}
     />
   )}

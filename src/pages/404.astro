@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import { getSiteContent } from '../lib/content';
+
+const content = await getSiteContent();
+const { site, theme } = content;
+
+const navLinks = [{ label: "Retour à l'accueil", href: '/' }];
+---
+
+<BaseLayout
+  siteName={site.name}
+  logo={site.logo}
+  ogImage={site.og_image}
+  tagline="Page introuvable"
+  primaryColor={theme.primary}
+  primaryHoverColor={theme.primary_hover}
+  secondaryColor={theme.secondary}
+  fontFamily={theme.font}
+  fontFamilyDisplay={theme.font_display}
+  bgColor={theme.bg}
+  surfaceColor={theme.surface}
+  footerColor={theme.footer}
+  textColor={theme.text}
+  textMutedColor={theme.text_muted}
+  borderColor={theme.border}
+  focusColor={theme.focus}
+  navLinks={navLinks}
+  phone={site.phone}
+  email={site.email}
+  address={site.address}
+  legalName={site.legal_name}
+  facebook={site.facebook}
+>
+  <section class="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8">
+    <p class="text-sm font-semibold text-primary">Erreur 404</p>
+    <h1 class="mt-2 text-[var(--color-text)]">Cette page n'existe pas</h1>
+    <p class="mt-4 text-[var(--color-text-muted)]">
+      Le lien que vous avez suivi est peut-être incorrect, ou la page a été déplacée.
+    </p>
+    <div class="mt-8">
+      <Button href="/" size="lg">Retour à l'accueil</Button>
+    </div>
+  </section>
+</BaseLayout>

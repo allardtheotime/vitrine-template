@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSiteContent } from '../lib/content';
+
+const content = await getSiteContent();
+const { site, theme } = content;
+
+const navLinks = [{ label: 'Retour au site', href: '/' }];
+---
+
+<BaseLayout
+  siteName={site.name}
+  logo={site.logo}
+  ogImage={site.og_image}
+  tagline="Politique de confidentialité"
+  primaryColor={theme.primary}
+  primaryHoverColor={theme.primary_hover}
+  secondaryColor={theme.secondary}
+  fontFamily={theme.font}
+  fontFamilyDisplay={theme.font_display}
+  bgColor={theme.bg}
+  surfaceColor={theme.surface}
+  footerColor={theme.footer}
+  textColor={theme.text}
+  textMutedColor={theme.text_muted}
+  borderColor={theme.border}
+  focusColor={theme.focus}
+  navLinks={navLinks}
+  phone={site.phone}
+  email={site.email}
+  address={site.address}
+  legalName={site.legal_name}
+  facebook={site.facebook}
+>
+  <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+    <h1 class="text-[var(--color-text)]">Politique de confidentialité</h1>
+
+    <div class="mt-8 space-y-6 text-sm text-[var(--color-text-muted)]">
+      <div>
+        <h2 class="font-semibold text-[var(--color-text)]">Qui traite vos données ?</h2>
+        <p class="mt-2">
+          {site.legal_name || site.name}{site.bce_number && <> (n° BCE {site.bce_number})</>}, responsable du
+          traitement des données collectées via ce site.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-[var(--color-text)]">Quelles données sont collectées ?</h2>
+        <p class="mt-2">
+          Les informations que vous transmettez volontairement via le formulaire de contact : nom, adresse email
+          et message. Par ailleurs, ce site utilise Vercel Web Analytics pour des statistiques de fréquentation
+          agrégées et anonymes (pages vues, provenance générale). Cet outil ne dépose aucun cookie, n'utilise
+          aucun identifiant personnel et ne permet pas de vous identifier individuellement.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-[var(--color-text)]">Pourquoi ces données sont-elles collectées ?</h2>
+        <p class="mt-2">
+          Uniquement pour répondre à votre demande de devis ou d'information. Ces données ne sont ni vendues, ni
+          cédées à des tiers à des fins commerciales.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-[var(--color-text)]">Qui a accès à ces données ?</h2>
+        <p class="mt-2">
+          {site.legal_name || site.name}, ainsi que les prestataires techniques nécessaires à l'envoi de votre
+          message : <a href="https://resend.com" class="text-primary hover:underline" rel="noopener">Resend</a>
+          {' '}(envoi de l'email) et <a href="https://vercel.com" class="text-primary hover:underline" rel="noopener">Vercel</a>
+          {' '}(hébergement du site). Ces prestataires n'utilisent vos données que pour assurer ce service technique.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-[var(--color-text)]">Combien de temps ces données sont-elles conservées ?</h2>
+        <p class="mt-2">
+          Le temps nécessaire pour traiter votre demande, puis supprimées ou archivées de façon raisonnable dans
+          le cadre de la relation commerciale si elle se poursuit (devis, facturation).
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-[var(--color-text)]">Quels sont vos droits ?</h2>
+        <p class="mt-2">
+          Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos
+          données. Pour l'exercer, contactez{' '}
+          {site.email ? <a href={`mailto:${site.email}`} class="text-primary hover:underline">{site.email}</a> : 'le responsable du traitement ci-dessus'}.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-[var(--color-text)]">Cookies</h2>
+        <p class="mt-2">
+          Ce site n'utilise aucun cookie de suivi. Les statistiques de fréquentation (Vercel Web Analytics) sont
+          collectées sans cookie ni identifiant, de façon agrégée et anonyme. Aucun consentement n'est donc
+          requis au sens du RGPD. Un simple indicateur technique (sessionStorage, pas un cookie) est utilisé pour
+          ne pas réafficher deux fois la mention "site de démonstration" pendant votre visite. Il n'est ni
+          transmis ni partagé, et disparaît à la fermeture de l'onglet.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

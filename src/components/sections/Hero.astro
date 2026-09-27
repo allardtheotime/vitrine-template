@@ -7,16 +7,17 @@ export interface Props {
   ctaText?: string;
   ctaLink?: string;
   image?: string;
+  imageAlt?: string;
 }
 
-const { title, subtitle, ctaText, ctaLink = '#contact', image } = Astro.props;
+const { title, subtitle, ctaText, ctaLink = '/#contact', image, imageAlt } = Astro.props;
 ---
 
 <section class="relative overflow-hidden bg-[var(--color-bg)]">
   <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 sm:px-6 md:grid-cols-2 md:py-28 lg:px-8">
     <div>
-      <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">{title}</h1>
-      {subtitle && <p class="mt-4 text-lg text-gray-600">{subtitle}</p>}
+      <h1 class="text-[var(--color-text)]">{title}</h1>
+      {subtitle && <p class="mt-4 text-lg text-[var(--color-text-muted)]">{subtitle}</p>}
       {ctaText && (
         <div class="mt-8">
           <Button href={ctaLink} size="lg">{ctaText}</Button>
@@ -27,7 +28,7 @@ const { title, subtitle, ctaText, ctaLink = '#contact', image } = Astro.props;
     {image && (
       <img
         src={image}
-        alt={title}
+        alt={imageAlt ?? title}
         loading="eager"
         class="w-full rounded-2xl object-cover shadow-lg"
       />

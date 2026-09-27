@@ -13,16 +13,16 @@ const { title, subtitle, items } = Astro.props;
 
 <SectionWrapper id="services" bg="bg">
   <div class="text-center">
-    <h2 class="text-3xl font-bold text-gray-900">{title}</h2>
-    {subtitle && <p class="mt-2 text-lg text-gray-500">{subtitle}</p>}
+    <h2 class="text-[var(--color-text)]">{title}</h2>
+    {subtitle && <p class="mt-2 text-lg text-[var(--color-text-muted)]">{subtitle}</p>}
   </div>
 
   <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {items.map((item) => (
       <div class="rounded-xl bg-[var(--color-surface)] p-6 shadow-sm transition-colors hover:shadow-md">
         <Icon name={item.icon} class="h-8 w-8 text-primary" />
-        <h3 class="mt-4 text-lg font-semibold text-gray-900">{item.title}</h3>
-        <p class="mt-2 text-sm text-gray-600">{item.description}</p>
+        <h3 class="mt-4 text-[var(--color-text)]">{item.title}</h3>
+        <p class="mt-2 text-sm text-[var(--color-text-muted)]">{item.description}</p>
       </div>
     ))}
   </div>

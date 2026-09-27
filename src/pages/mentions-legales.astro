@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import content from '../content-draft.json';
+import { getSiteContent } from '../lib/content';
 
+const content = await getSiteContent();
 const { site, theme } = content;
 
 const navLinks = [{ label: 'Retour au site', href: '/' }];
@@ -9,45 +10,54 @@ const navLinks = [{ label: 'Retour au site', href: '/' }];
 
 <BaseLayout
   siteName={site.name}
+  logo={site.logo}
+  ogImage={site.og_image}
   tagline="Mentions légales"
   primaryColor={theme.primary}
+  primaryHoverColor={theme.primary_hover}
   secondaryColor={theme.secondary}
   fontFamily={theme.font}
+  fontFamilyDisplay={theme.font_display}
   bgColor={theme.bg}
   surfaceColor={theme.surface}
   footerColor={theme.footer}
+  textColor={theme.text}
+  textMutedColor={theme.text_muted}
+  borderColor={theme.border}
+  focusColor={theme.focus}
   navLinks={navLinks}
   phone={site.phone}
   email={site.email}
   address={site.address}
   legalName={site.legal_name}
+  facebook={site.facebook}
 >
   <section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-    <h1 class="text-3xl font-bold text-gray-900">Mentions légales</h1>
+    <h1 class="text-[var(--color-text)]">Mentions légales</h1>
 
-    <div class="mt-8 space-y-6 text-sm text-gray-700">
+    <div class="mt-8 space-y-6 text-sm text-[var(--color-text-muted)]">
       <div>
-        <h2 class="font-semibold text-gray-900">Éditeur du site</h2>
+        <h2 class="font-semibold text-[var(--color-text)]">Éditeur du site</h2>
         <p>{site.legal_name || site.name}</p>
         {site.legal_form && <p>{site.legal_form}</p>}
         {site.bce_number && <p>Numéro BCE : {site.bce_number}</p>}
         {site.vat_number && <p>Numéro de TVA : {site.vat_number}</p>}
         {site.address && <p>{site.address}</p>}
         {site.regulated_profession && site.regulatory_authority && (
-          <p>Profession réglementée — {site.regulatory_authority}{site.license_number ? ` (n° ${site.license_number})` : ''}</p>
+          <p>Profession réglementée : {site.regulatory_authority}{site.license_number ? ` (n° ${site.license_number})` : ''}</p>
         )}
       </div>
 
       {(site.email || site.phone) && (
         <div>
-          <h2 class="font-semibold text-gray-900">Contact</h2>
+          <h2 class="font-semibold text-[var(--color-text)]">Contact</h2>
           {site.email && <p>{site.email}</p>}
           {site.phone && <p>{site.phone}</p>}
         </div>
       )}
 
       <div>
-        <h2 class="font-semibold text-gray-900">Hébergement</h2>
+        <h2 class="font-semibold text-[var(--color-text)]">Hébergement</h2>
         <p>Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis.</p>
       </div>
     </div>

@@ -1,6 +1,8 @@
 /* Police par défaut auto-hébergée (@fontsource/inter) — aucune requête externe,
    font-display: swap déjà géré par le package. Ne jamais remplacer par un <link>
-   Google Fonts (cf. CLAUDE.md §11). */
+   Google Fonts (cf. CLAUDE.md §11). Si DESIGN.md demande une police d'affichage
+   différente pour les titres, l'auto-héberger de la même façon (import Fontsource
+   ou @font-face + fichiers dans public/fonts/) et l'importer ici. */
 @import '@fontsource/inter/400.css';
 @import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
@@ -10,15 +12,24 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Variables CSS injectées depuis content-draft.json (theme.*) via BaseLayout.astro.
-   Aucune couleur ne doit être codée en dur ailleurs dans les composants. */
+/* Variables CSS injectées depuis Sanity (siteContent, champs color*) via
+   BaseLayout.astro. Aucune couleur ne doit être codée en dur ailleurs dans
+   les composants. Les quatre dernières (text/textMuted/border/focus) et
+   primaryHover/fontDisplay sont optionnelles côté schéma — ces valeurs par
+   défaut s'appliquent si BaseLayout ne les reçoit pas. */
 :root {
   --color-primary: #1D4ED8;
+  --color-primary-hover: #1D4ED8;
   --color-secondary: #F59E0B;
   --color-bg: #F9FAFB;
   --color-surface: #FFFFFF;
   --color-footer: #111827;
+  --color-text: #111827;
+  --color-text-muted: #6B7280;
+  --color-border: #E5E7EB;
+  --color-focus: #1D4ED8;
   --font-family: 'Inter', system-ui, sans-serif;
+  --font-family-display: 'Inter', system-ui, sans-serif;
 }
 
 /* Pas de règle "font-family" ici : Tailwind Preflight (@tailwind base ci-dessus)
@@ -31,7 +42,30 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Zone tactile minimale sur mobile pour tout élément interactif */
+/* Hiérarchie typographique — une seule source de vérité pour la taille/graisse
+   des titres, cohérente sur tout le site sans dupliquer des classes
+   text-3xl/text-4xl partout (bug déjà rencontré : un h2 avec une classe
+   Tailwind codée en dur rendait à une taille différente des autres h2 du
+   site, la classe l'emportant sur cette règle par spécificité CSS — ne
+   jamais réintroduire de classe de taille sur un titre, seulement la couleur). */
+h1, h2, h3 {
+  font-family: var(--font-family-display), var(--font-family);
+  font-weight: 700;
+  line-height: 1.15;
+}
+h1 { font-size: clamp(2.25rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; }
+h3 { font-size: 1.25rem; font-weight: 600; }
+
+/* Zone tactile minimale sur mobile pour tout élément interactif. Ne centre
+   PAS verticalement le texte à elle seule (bug rencontré plusieurs fois) —
+   toujours ajouter inline-flex items-center (ou flex items-center) sur les
+   <a>/<button> concernés. */
 button, a, input, textarea {
   min-height: 44px;
+}
+
+/* Bouton actif : léger enfoncement au clic */
+.btn-press:active {
+  transform: scale(0.98);
 }

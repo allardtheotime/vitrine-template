@@ -2,41 +2,62 @@
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
 import DemoNotice from '../components/ui/DemoNotice.astro';
+import Analytics from '@vercel/analytics/astro';
 import '../styles/global.css';
 
 export interface Props {
   siteName: string;
+  logo?: string;
   tagline: string;
   primaryColor: string;
+  primaryHoverColor?: string;
   secondaryColor: string;
   fontFamily: string;
+  fontFamilyDisplay?: string;
   bgColor?: string;
   surfaceColor?: string;
   footerColor?: string;
+  textColor?: string;
+  textMutedColor?: string;
+  borderColor?: string;
+  focusColor?: string;
   navLinks: { label: string; href: string }[];
   phone?: string;
   email?: string;
   address?: string;
   legalName?: string;
+  facebook?: string;
   isDemo?: boolean;
+  ogImage?: string;
 }
 
 const {
   siteName,
+  logo,
   tagline,
   primaryColor,
+  primaryHoverColor = primaryColor,
   secondaryColor,
   fontFamily,
+  fontFamilyDisplay = fontFamily,
   bgColor = '#F9FAFB',
   surfaceColor = '#FFFFFF',
   footerColor = '#111827',
+  textColor = '#111827',
+  textMutedColor = '#6B7280',
+  borderColor = '#E5E7EB',
+  focusColor = primaryColor,
   navLinks,
   phone,
   email,
   address,
   legalName,
+  facebook,
   isDemo = false,
+  ogImage,
 } = Astro.props;
+
+const absoluteOgImage = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 ---
 
 <!doctype html>
@@ -44,31 +65,58 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{siteName} — {tagline}</title>
+    <title>{siteName} · {tagline}</title>
     <meta name="description" content={tagline} />
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content={siteName} />
     <meta property="og:description" content={tagline} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:locale" content="fr_BE" />
+    {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={siteName} />
+    <meta name="twitter:description" content={tagline} />
+    {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
     <link rel="canonical" href={Astro.url} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <style define:vars={{ colorPrimary: primaryColor, colorSecondary: secondaryColor, colorBg: bgColor, colorSurface: surfaceColor, colorFooter: footerColor, fontFamily }}>
+    <style define:vars={{
+      colorPrimary: primaryColor,
+      colorPrimaryHover: primaryHoverColor,
+      colorSecondary: secondaryColor,
+      colorBg: bgColor,
+      colorSurface: surfaceColor,
+      colorFooter: footerColor,
+      colorText: textColor,
+      colorTextMuted: textMutedColor,
+      colorBorder: borderColor,
+      colorFocus: focusColor,
+      fontFamily,
+      fontFamilyDisplay,
+    }}>
       :root {
         --color-primary: var(--colorPrimary);
+        --color-primary-hover: var(--colorPrimaryHover);
         --color-secondary: var(--colorSecondary);
         --color-bg: var(--colorBg);
         --color-surface: var(--colorSurface);
         --color-footer: var(--colorFooter);
+        --color-text: var(--colorText);
+        --color-text-muted: var(--colorTextMuted);
+        --color-border: var(--colorBorder);
+        --color-focus: var(--colorFocus);
         --font-family: var(--fontFamily);
+        --font-family-display: var(--fontFamilyDisplay);
       }
     </style>
   </head>
-  <body class="bg-[var(--color-bg)] text-gray-900 antialiased">
-    <Navbar siteName={siteName} links={navLinks} ctaText="Devis gratuit" ctaHref="#contact" />
-    <main>
+  <body class="flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)] antialiased">
+    <Navbar siteName={siteName} logo={logo} links={navLinks} ctaText="Devis gratuit" ctaHref="/#contact" phone={phone} />
+    <main class="flex-1">
       <slot />
     </main>
-    <Footer siteName={siteName} phone={phone} email={email} address={address} legalName={legalName} />
+    <Footer siteName={siteName} phone={phone} email={email} address={address} legalName={legalName} facebook={facebook} />
     <DemoNotice isDemo={isDemo} />
+    <Analytics />
   </body>
 </html>

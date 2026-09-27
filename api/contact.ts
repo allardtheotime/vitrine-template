@@ -10,7 +10,11 @@ interface ContactBody {
   name?: string;
   email?: string;
   message?: string;
+  company?: string; // honeypot anti-spam — doit toujours rester vide
+  loaded_at?: string; // timestamp (ms) d'affichage du formulaire — anti-bot
 }
+
+const MIN_SUBMIT_DELAY_MS = 2000;
 
 function isValidEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -22,7 +26,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return;
   }
 
-  const { name, email, message } = (req.body ?? {}) as ContactBody;
+  const { name, email, message, company, loaded_at } = (req.body ?? {}) as ContactBody;
+
+  // Anti-spam silencieux : un bot qui remplit le champ piège ou soumet plus
+  // vite qu'un humain ne peut raisonnablement le faire reçoit un succès
+  // factice, sans email envoyé — ne jamais révéler la détection au client.
+  const submittedTooFast =
+    !loaded_at || Date.now() - Number(loaded_at) < MIN_SUBMIT_DELAY_MS;
+  if (company?.trim() || submittedTooFast) {
+    res.status(200).json({ ok: true });
+    return;
+  }
 
   if (!name?.trim() || !email?.trim() || !message?.trim()) {
     res.status(400).json({ error: 'Champs requis manquants' });

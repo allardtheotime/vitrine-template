@@ -1,40 +1,60 @@
 ---
+// Repli téléphone : le bouton "Appeler" n'apparaît, en desktop comme en mobile,
+// que si `phone` est fourni — jamais de bouton vide en attendant.
 export interface Props {
   siteName: string;
+  logo?: string;
   links: { label: string; href: string }[];
   ctaText?: string;
   ctaHref?: string;
+  phone?: string;
 }
 
-const { siteName, links, ctaText, ctaHref = '#contact' } = Astro.props;
+const { siteName, logo, links, ctaText, ctaHref = '/#contact', phone } = Astro.props;
 ---
 
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur shadow-sm">
+<header class="sticky top-0 z-40 bg-[var(--color-surface)] shadow-sm">
   <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-    <a href="#" class="text-lg font-bold text-primary">{siteName}</a>
+    <a href="/" class="flex items-center gap-2">
+      {logo ? (
+        <img src={logo} alt={siteName} class="h-14 w-auto" />
+      ) : (
+        <span class="text-lg font-bold text-primary">{siteName}</span>
+      )}
+    </a>
 
-    <ul class="hidden gap-6 md:flex">
+    <ul class="hidden gap-6 lg:flex">
       {links.map((link) => (
         <li>
-          <a href={link.href} class="text-sm font-medium text-gray-700 hover:text-primary">
+          <a href={link.href} class="inline-flex items-center text-sm font-medium text-[var(--color-text-muted)] transition-colors hover:text-primary">
             {link.label}
           </a>
         </li>
       ))}
     </ul>
 
-    {ctaText && (
-      <a
-        href={ctaHref}
-        class="hidden items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90 md:inline-flex"
-      >
-        {ctaText}
-      </a>
-    )}
+    <div class="hidden items-center gap-3 lg:flex">
+      {phone && (
+        <a
+          href={`tel:${phone.replace(/\s+/g, '')}`}
+          class="inline-flex items-center text-sm font-semibold text-[var(--color-text)] transition-colors hover:text-primary"
+        >
+          {phone}
+        </a>
+      )}
+      {ctaText && (
+        <a
+          href={ctaHref}
+          class="btn-press inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[var(--color-primary-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-focus)]"
+        >
+          {ctaText}
+        </a>
+      )}
+    </div>
 
     <button
       id="mobile-menu-toggle"
-      class="inline-flex min-w-[44px] items-center justify-center rounded-lg p-2 text-gray-700 md:hidden"
+      class="inline-flex min-w-[44px] items-center justify-center rounded-md p-2 text-[var(--color-text)] lg:hidden"
       aria-label="Ouvrir le menu"
       aria-expanded="false"
     >
@@ -44,17 +64,24 @@ const { siteName, links, ctaText, ctaHref = '#contact' } = Astro.props;
     </button>
   </nav>
 
-  <ul id="mobile-menu" class="hidden flex-col gap-1 border-t bg-white px-4 py-2 md:hidden">
+  <ul id="mobile-menu" class="hidden flex-col gap-1 border-t border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 lg:hidden">
     {links.map((link) => (
       <li>
-        <a href={link.href} class="block rounded-lg px-3 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">
+        <a href={link.href} class="block rounded-md px-3 py-3 text-sm font-medium text-[var(--color-text-muted)] hover:bg-[var(--color-bg)]">
           {link.label}
         </a>
       </li>
     ))}
+    {phone && (
+      <li>
+        <a href={`tel:${phone.replace(/\s+/g, '')}`} class="flex items-center justify-center rounded-md border border-[var(--color-border)] px-3 py-3 text-sm font-semibold text-[var(--color-text)]">
+          {phone}
+        </a>
+      </li>
+    )}
     {ctaText && (
       <li>
-        <a href={ctaHref} class="flex items-center justify-center rounded-lg bg-primary px-3 py-3 text-sm font-semibold text-white">
+        <a href={ctaHref} class="btn-press flex items-center justify-center rounded-md bg-primary px-3 py-3 text-sm font-semibold text-white">
           {ctaText}
         </a>
       </li>

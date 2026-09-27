@@ -19,8 +19,8 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| Navbar | `src/components/layout/Navbar.astro` | `siteName`, `links[]`, `ctaText?`, `ctaHref?` | Navigation principale, sticky, menu hamburger mobile | Boilerplate |
-| Footer | `src/components/layout/Footer.astro` | `siteName`, `phone?`, `email?`, `address?`, `legalName?` | Pied de page ; omet chaque ligne dont la donnée est absente (jamais de "à compléter") | Boilerplate |
+| Navbar | `src/components/layout/Navbar.astro` | `siteName`, `logo?`, `links[]`, `ctaText?`, `ctaHref?`, `phone?` | Navigation principale, sticky, menu hamburger mobile (se referme au clic sur un lien interne). Bouton "Appeler" affiché seulement si `phone` fourni. Nav desktop complet en `lg:` (pas `md:`, cf. CLAUDE.md §7) | Boilerplate |
+| Footer | `src/components/layout/Footer.astro` | `siteName`, `phone?`, `email?`, `address?`, `legalName?`, `facebook?` | Pied de page ; omet chaque ligne dont la donnée est absente (jamais de "à compléter") | Boilerplate |
 
 ---
 
@@ -28,7 +28,7 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| BaseLayout | `src/layouts/BaseLayout.astro` | `siteName`, `tagline`, `primaryColor`, `secondaryColor`, `fontFamily`, `bgColor?`, `surfaceColor?`, `footerColor?`, `navLinks[]`, `phone?`, `email?`, `address?`, `legalName?`, `isDemo?` | Layout unique (site one-page). Injecte les variables CSS de thème (dont bg/surface/footer, avec fallback par défaut), rend Navbar/Footer/DemoNotice | Boilerplate |
+| BaseLayout | `src/layouts/BaseLayout.astro` | `siteName`, `logo?`, `ogImage?`, `tagline`, `primaryColor`, `primaryHoverColor?`, `secondaryColor`, `fontFamily`, `fontFamilyDisplay?`, `bgColor?`, `surfaceColor?`, `footerColor?`, `textColor?`, `textMutedColor?`, `borderColor?`, `focusColor?`, `navLinks[]`, `phone?`, `email?`, `address?`, `legalName?`, `facebook?`, `isDemo?` | Layout unique (site one-page, sticky-footer `flex min-h-screen flex-col`/`flex-1`). Injecte la palette complète de variables CSS (fallback par défaut si absentes), meta SEO/OG/Twitter, `<Analytics />`, rend Navbar/Footer/DemoNotice | Boilerplate |
 
 ---
 
@@ -36,8 +36,8 @@ Chaque composant est documenté avec :
 
 | Composant | Fichier | Props | Usage | Statut |
 |-----------|---------|-------|-------|--------|
-| Hero | `src/components/sections/Hero.astro` | `title`, `subtitle?`, `ctaText?`, `ctaLink?`, `image?` | Section d'accroche, toujours en premier | Boilerplate |
-| About | `src/components/sections/About.astro` | `title`, `subtitle?`, `text`, `image?`, `stats?[]{value, label}` | Présentation de l'entreprise + chiffres clés | Boilerplate |
+| Hero | `src/components/sections/Hero.astro` | `title`, `subtitle?`, `ctaText?`, `ctaLink?`, `image?`, `imageAlt?` | Section d'accroche, toujours en premier | Boilerplate |
+| About | `src/components/sections/About.astro` | `title`, `subtitle?`, `text`, `image?`, `imageAlt?`, `stats?[]{value, label}` | Présentation de l'entreprise + chiffres clés | Boilerplate |
 | Services | `src/components/sections/Services.astro` | `title`, `subtitle?`, `items[]{icon, title, description}` | Grille de services (2-3 colonnes). `icon` = nom Lucide (cf. `Icon.astro`), jamais un emoji | Boilerplate |
 | Testimonials | `src/components/sections/Testimonials.astro` | `title?`, `items[]{name, text, rating}` | Grille d'avis clients avec étoiles | Boilerplate |
 | Contact | `src/components/sections/Contact.astro` | `phone?`, `email?`, `address?`, `hours?` | Coordonnées + formulaire vers `/api/contact`. Rendue automatiquement depuis `site.*`, jamais une entrée de `sections{}` | Boilerplate |
@@ -88,5 +88,5 @@ Chaque composant est documenté avec :
 | Slider/Carousel | Nécessite du JS complexe, nuit aux performances, remplacer par une grille statique |
 | Carte Google Maps intégrée | Nécessite une clé API payante, remplacer par un lien Google Maps |
 | Espace client / login | Hors scope vitrine statique |
-| Blog avec BDD | Hors scope — content-draft.json n'est pas fait pour du contenu illimité |
+| Blog avec BDD | Hors scope — le schéma Sanity de ce projet n'est pas fait pour du contenu illimité |
 | Mode multi-pages | Complexité non justifiée pour une démo — le site reste one-page |
