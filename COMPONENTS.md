@@ -65,7 +65,10 @@ Chaque composant est documenté avec :
 |-----------|---------|-------|-------|---------|--------|
 | ZoneIntervention | `src/components/sections/ZoneIntervention.astro` | `title`, `text`, `areas[]` (noms de villes) | Section dédiée à la zone géographique desservie, avec badges — cf. DESIGN.md quand le client a une zone d'intervention à mettre en avant | detongre-construction-virton | Client |
 | Realisations | `src/components/sections/Realisations.astro` | `title`, `items[]{image, alt, caption?}` | Galerie de photos de chantier. Conditionnelle : à ne rendre que si `items.length > 0` (jamais de galerie vide ni de visuels stock) | detongre-construction-virton | Client |
-| MobileCTABar | `src/components/ui/MobileCTABar.astro` | `ctaText`, `ctaHref?`, `phone?` | Barre CTA fixe en bas d'écran, mobile/tablette uniquement (`lg:hidden`) — bouton "Appeler" absent tant que `phone` n'est pas fourni | detongre-construction-virton | Client |
+| MobileCTABar | `src/components/ui/MobileCTABar.astro` | `ctaText`, `ctaHref?`, `phone?` | Barre CTA fixe en bas d'écran, mobile/tablette uniquement (`lg:hidden`) — bouton "Appeler" absent tant que `phone` n'est pas fourni. Chez lilot-pates-namur : second bouton vers la carte (`#carte`) au lieu du formulaire | detongre-construction-virton, lilot-pates-namur | Client |
+| Announcement | `src/components/sections/Announcement.astro` | `title`, `text?` | Bandeau d'actualité pleine largeur (fond sombre, icône mégaphone), piloté par Sanity (`announcementVisible`) — ex. déménagement | lilot-pates-namur | Client |
+| Menu | `src/components/sections/Menu.astro` | `title`, `subtitle?`, `categories[]{title, note?, footnote?, prices[]{label, price}, items[]{name, description?, price?}}`, `supplements?`, `allergyNote?` | Carte de restaurant en HTML (jamais en image), puces d'ancre par rubrique, prix unique en médaillons ou prix à la ligne avec filet pointillé. Zéro JS | lilot-pates-namur | Client |
+| Gallery | `src/components/sections/Gallery.astro` | `title`, `subtitle?`, `images[]{src, srcset?, alt}`, `facebook?`, `facebookLabel?` | Galerie de vraies photos (plats, équipe), vignettes carrées, sans visionneuse (zéro JS). Conditionnelle : jamais rendue vide ni avec du stock | lilot-pates-namur | Client |
 
 ---
 
@@ -75,7 +78,16 @@ Chaque composant est documenté avec :
 
 | Variante | Fichier | Différence vs original | Clients | Statut |
 |----------|---------|----------------------|---------|--------|
-| — | — | — | — | — |
+| RestaurantLayout | `src/layouts/RestaurantLayout.astro` | BaseLayout + `NavbarDark`/`FooterDark`/`MobileCTABar`, props `navCtaText?`/`navCtaLink?`/`hours?`/`bceNumber?`/`legalForm?`, lien d'évitement « Aller au contenu », `theme-color` | lilot-pates-namur | Client |
+| NavbarDark | `src/components/layout/NavbarDark.astro` | En-tête sur `--color-secondary`, logo SVG clair, bouton « Appeler » en icône ronde (numéro en `aria-label`), CTA pilule or | lilot-pates-namur | Client |
+| FooterDark | `src/components/layout/FooterDark.astro` | 3 colonnes (logo + filet tricolore / coordonnées / horaires + Facebook), mention légale avec forme abrégée et BCE | lilot-pates-namur | Client |
+| PillButton | `src/components/ui/PillButton.astro` | Pilule, variantes `primary` (texte foncé sur or) / `outline-dark` / `outline-light`, attributs HTML transmis (`target`, `rel`...) | lilot-pates-namur | Client |
+| HeroSplit | `src/components/sections/HeroSplit.astro` | Fond sombre, photo à droite (au-dessus sur mobile), `eyebrow?`, `badges[]`, second CTA téléphone, `srcset` | lilot-pates-namur | Client |
+| ConceptCards | `src/components/sections/ConceptCards.astro` | Variante de Services : cartes à icône or dans un cercle `--color-secondary`, élévation au survol | lilot-pates-namur | Client |
+| AboutStory | `src/components/sections/AboutStory.astro` | Variante d'About : photo 4/5 + vignette d'archive en surimpression (`image2?`, `image2Caption?`), chiffres clés en Playfair | lilot-pates-namur | Client |
+| TestimonialsQuotes | `src/components/sections/TestimonialsQuotes.astro` | Variante de Testimonials : note globale réelle (`ratingValue?`, `ratingLabel?`) avec étoiles partielles, `rating` facultatif par citation (aucune étoile inventée), `source?` | lilot-pates-namur | Client |
+| DemoNoticeThemed | `src/components/ui/DemoNoticeThemed.astro` | Couleurs du thème (surface, texte) au lieu des gris codés en dur, bouton pilule texte foncé sur `primary` (contraste AA avec un primaire clair) | lilot-pates-namur | Client |
+| ContactHours | `src/components/sections/ContactHours.astro` | Variante de Contact : tableau d'horaires (`openingHours[]{day, hours, note?}`), accès, bouton Itinéraire (Google Maps), titres pilotés par Sanity, même formulaire/anti-spam, bouton désactivé pendant l'envoi | lilot-pates-namur | Client |
 
 ---
 
