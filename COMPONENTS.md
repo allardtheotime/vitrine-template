@@ -69,6 +69,8 @@ Chaque composant est documenté avec :
 | Announcement | `src/components/sections/Announcement.astro` | `title`, `text?` | Bandeau d'actualité pleine largeur (fond sombre, icône mégaphone), piloté par Sanity (`announcementVisible`) — ex. déménagement | lilot-pates-namur | Client |
 | Menu | `src/components/sections/Menu.astro` | `title`, `subtitle?`, `categories[]{title, note?, footnote?, prices[]{label, price}, items[]{name, description?, price?}}`, `supplements?`, `allergyNote?` | Carte de restaurant en HTML (jamais en image), puces d'ancre par rubrique, prix unique en médaillons ou prix à la ligne avec filet pointillé. Zéro JS | lilot-pates-namur | Client |
 | Gallery | `src/components/sections/Gallery.astro` | `title`, `subtitle?`, `images[]{src, srcset?, alt}`, `facebook?`, `facebookLabel?` | Galerie de vraies photos (plats, équipe), vignettes carrées, sans visionneuse (zéro JS). Conditionnelle : jamais rendue vide ni avec du stock | lilot-pates-namur | Client |
+| ServiceModes | `src/components/sections/ServiceModes.astro` | `title`, `subtitle?`, `dine{title,text,image,image_srcset,image_alt}`, `take{…}` | Deux façons de consommer côte à côte (ex. sur place à l'assiette / à emporter en bol), même recette en photo | lilot-pates-namur | Client |
+| Catering | `src/components/sections/Catering.astro` | `title`, `subtitle?`, `note?`, `ctaText?`, `phone?`, `items[]{title, description?, image?, image_srcset?, image_alt?}` | Offres traiteur / événements en cartes (photo ou icône Lucide de repli), mention de conditions, CTA contact + téléphone | lilot-pates-namur | Client |
 
 ---
 
@@ -82,7 +84,7 @@ Chaque composant est documenté avec :
 | NavbarDark | `src/components/layout/NavbarDark.astro` | En-tête sur `--color-secondary`, logo SVG clair, bouton « Appeler » en icône ronde (numéro en `aria-label`), CTA pilule or | lilot-pates-namur | Client |
 | FooterDark | `src/components/layout/FooterDark.astro` | 3 colonnes (logo + filet tricolore / coordonnées / horaires + Facebook), mention légale avec forme abrégée et BCE | lilot-pates-namur | Client |
 | PillButton | `src/components/ui/PillButton.astro` | Pilule, variantes `primary` (texte foncé sur or) / `outline-dark` / `outline-light`, attributs HTML transmis (`target`, `rel`...) | lilot-pates-namur | Client |
-| HeroSplit | `src/components/sections/HeroSplit.astro` | Fond sombre, photo à droite (au-dessus sur mobile), `eyebrow?`, `badges[]`, second CTA téléphone, `srcset` | lilot-pates-namur | Client |
+| HeroSplit | `src/components/sections/HeroSplit.astro` | Fond sombre, photo à droite (au-dessus sur mobile), `eyebrow?`, `badges[]`, second CTA téléphone, `srcset`, encadré `monthly?` (menu du mois, rendu seulement s'il a des plats) | lilot-pates-namur | Client |
 | ConceptCards | `src/components/sections/ConceptCards.astro` | Variante de Services : cartes à icône or dans un cercle `--color-secondary`, élévation au survol | lilot-pates-namur | Client |
 | AboutStory | `src/components/sections/AboutStory.astro` | Variante d'About : photo 4/5 + vignette d'archive en surimpression (`image2?`, `image2Caption?`), chiffres clés en Playfair | lilot-pates-namur | Client |
 | TestimonialsQuotes | `src/components/sections/TestimonialsQuotes.astro` | Variante de Testimonials : note globale réelle (`ratingValue?`, `ratingLabel?`) avec étoiles partielles, `rating` facultatif par citation (aucune étoile inventée), `source?` | lilot-pates-namur | Client |
