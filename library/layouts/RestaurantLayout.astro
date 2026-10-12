@@ -1,0 +1,149 @@
+---
+// Variante client de BaseLayout.astro (DESIGN.md) : en-tête et pied de page
+// sombres, bouton d'en-tête piloté par Sanity (site.nav_cta_*), barre CTA mobile.
+import NavbarDark from '../components/layout/NavbarDark.astro';
+import FooterDark from '../components/layout/FooterDark.astro';
+import MobileCTABar from '../components/ui/MobileCTABar.astro';
+import DemoNotice from '../components/ui/DemoNoticeThemed.astro';
+import Analytics from '@vercel/analytics/astro';
+import '../styles/global.css';
+
+export interface Props {
+  siteName: string;
+  logo?: string;
+  tagline: string;
+  primaryColor: string;
+  primaryHoverColor?: string;
+  secondaryColor: string;
+  fontFamily: string;
+  fontFamilyDisplay?: string;
+  bgColor?: string;
+  surfaceColor?: string;
+  footerColor?: string;
+  textColor?: string;
+  textMutedColor?: string;
+  borderColor?: string;
+  focusColor?: string;
+  navLinks: { label: string; href: string }[];
+  phone?: string;
+  email?: string;
+  address?: string;
+  legalName?: string;
+  facebook?: string;
+  isDemo?: boolean;
+  ogImage?: string;
+  navCtaText?: string;
+  navCtaLink?: string;
+  hours?: string;
+  bceNumber?: string;
+  legalForm?: string;
+}
+
+const {
+  siteName,
+  logo,
+  tagline,
+  primaryColor,
+  primaryHoverColor = primaryColor,
+  secondaryColor,
+  fontFamily,
+  fontFamilyDisplay = fontFamily,
+  bgColor = '#F9FAFB',
+  surfaceColor = '#FFFFFF',
+  footerColor = '#111827',
+  textColor = '#111827',
+  textMutedColor = '#6B7280',
+  borderColor = '#E5E7EB',
+  focusColor = primaryColor,
+  navLinks,
+  phone,
+  email,
+  address,
+  legalName,
+  facebook,
+  isDemo = false,
+  ogImage,
+  navCtaText,
+  navCtaLink = '/#carte',
+  hours,
+  bceNumber,
+  legalForm,
+} = Astro.props;
+
+const absoluteOgImage = ogImage ? new URL(ogImage, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{siteName} · {tagline}</title>
+    <meta name="description" content={tagline} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={siteName} />
+    <meta property="og:description" content={tagline} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:locale" content="fr_BE" />
+    {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={siteName} />
+    <meta name="twitter:description" content={tagline} />
+    {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
+    <link rel="canonical" href={Astro.url} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content={secondaryColor} />
+    <style define:vars={{
+      colorPrimary: primaryColor,
+      colorPrimaryHover: primaryHoverColor,
+      colorSecondary: secondaryColor,
+      colorBg: bgColor,
+      colorSurface: surfaceColor,
+      colorFooter: footerColor,
+      colorText: textColor,
+      colorTextMuted: textMutedColor,
+      colorBorder: borderColor,
+      colorFocus: focusColor,
+      fontFamily,
+      fontFamilyDisplay,
+    }}>
+      :root {
+        --color-primary: var(--colorPrimary);
+        --color-primary-hover: var(--colorPrimaryHover);
+        --color-secondary: var(--colorSecondary);
+        --color-bg: var(--colorBg);
+        --color-surface: var(--colorSurface);
+        --color-footer: var(--colorFooter);
+        --color-text: var(--colorText);
+        --color-text-muted: var(--colorTextMuted);
+        --color-border: var(--colorBorder);
+        --color-focus: var(--colorFocus);
+        --font-family: var(--fontFamily);
+        --font-family-display: var(--fontFamilyDisplay);
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)] antialiased">
+    <a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:items-center focus:rounded-full focus:bg-primary focus:px-4 focus:text-[var(--color-text)]">Aller au contenu</a>
+    <NavbarDark siteName={siteName} logo={logo} links={navLinks} ctaText={navCtaText} ctaHref={navCtaLink} phone={phone} />
+    <main id="contenu" class="flex-1">
+      <slot />
+    </main>
+    <FooterDark
+      siteName={siteName}
+      logo={logo}
+      phone={phone}
+      email={email}
+      address={address}
+      hours={hours}
+      legalName={legalName}
+      legalForm={legalForm}
+      bceNumber={bceNumber}
+      facebook={facebook}
+    />
+    {navCtaText && <MobileCTABar ctaText={navCtaText} ctaHref={navCtaLink} phone={phone} />}
+    <DemoNotice isDemo={isDemo} />
+    <Analytics />
+  </body>
+</html>

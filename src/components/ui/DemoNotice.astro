@@ -1,5 +1,7 @@
 ---
-// Pop-up affichée uniquement quand meta.is_demo est vrai (content-draft.json).
+// Pop-up affichée uniquement quand le champ isDemo du document Sanity est vrai.
+// Couleurs du thème uniquement (surface, texte) : jamais de gris codé en dur, sinon
+// la pop-up jure avec un thème sombre ou un primaire clair (bug vu chez lilot-pates-namur).
 // Dérogation ciblée à la règle "zéro JS client" : nécessaire à la fonctionnalité,
 // contenue à ce seul composant.
 export interface Props {
@@ -14,14 +16,14 @@ const { isDemo = false } = Astro.props;
     id="demo-notice"
     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
   >
-    <div class="max-w-md rounded-xl bg-white p-6 shadow-xl">
-      <p class="mb-4 text-sm text-gray-700">
+    <div class="max-w-md rounded-xl bg-[var(--color-surface)] p-6 shadow-xl">
+      <p class="mb-4 text-sm text-[var(--color-text)]">
         Ce site est une démonstration générée automatiquement à titre d'exemple.
         Certains contenus sont provisoires et seront confirmés avec le client avant mise en ligne définitive.
       </p>
       <button
         id="demo-notice-dismiss"
-        class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+        class="btn-press inline-flex min-h-[44px] items-center rounded-lg bg-primary px-4 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)]"
       >
         J'ai compris
       </button>

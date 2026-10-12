@@ -51,6 +51,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const apiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_TO_EMAIL;
   const siteName = process.env.SITE_NAME ?? 'Site vitrine';
+  // Expéditeur : une adresse du domaine du client vérifié dans Resend (ex.
+  // contact@lilotpates.be). Sans domaine vérifié, retombe sur l'adresse sandbox
+  // de Resend, qui ne peut écrire qu'à l'adresse du compte Resend.
+  const fromEmail = process.env.CONTACT_FROM_EMAIL ?? 'onboarding@resend.dev';
 
   if (!apiKey || !toEmail) {
     console.error('RESEND_API_KEY ou CONTACT_TO_EMAIL manquant dans les variables d\'environnement Vercel');
@@ -66,7 +70,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Formulaire de contact <onboarding@resend.dev>',
+        from: `"${siteName.replace(/"/g, '')}" <${fromEmail}>`,
         to: [toEmail],
         reply_to: email,
         subject: `Nouveau message — ${siteName}`,

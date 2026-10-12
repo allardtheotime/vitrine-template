@@ -1,0 +1,52 @@
+---
+// Section propre à ce client : deux façons de manger, côte à côte. Sur place
+// (assiettes plus généreuses, mieux présentées) et à emporter (bols plus
+// simples et moins chers), chacune illustrée par la même recette.
+import SectionWrapper from '../ui/SectionWrapper.astro';
+
+interface Mode {
+  title?: string;
+  text?: string;
+  image?: string;
+  image_srcset?: string;
+  image_alt?: string;
+}
+
+export interface Props {
+  title: string;
+  subtitle?: string;
+  dine: Mode;
+  take: Mode;
+}
+
+const { title, subtitle, dine, take } = Astro.props;
+const modes = [dine, take].filter((m) => m && m.title);
+---
+
+<SectionWrapper id="sur-place" bg="surface">
+  <div class="mx-auto max-w-2xl text-center">
+    <h2 class="text-[var(--color-text)]">{title}</h2>
+    {subtitle && <p class="mt-3 text-lg text-[var(--color-text-muted)]">{subtitle}</p>}
+  </div>
+
+  <div class="mt-12 grid gap-6 md:grid-cols-2">
+    {modes.map((m) => (
+      <article class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-1)]">
+        {m.image && (
+          <img
+            src={m.image}
+            srcset={m.image_srcset}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            alt={m.image_alt ?? ''}
+            loading="lazy"
+            class="aspect-[4/3] w-full object-cover"
+          />
+        )}
+        <div class="p-6">
+          <h3 class="text-[var(--color-text)]">{m.title}</h3>
+          {m.text && <p class="mt-2 text-[var(--color-text-muted)]">{m.text}</p>}
+        </div>
+      </article>
+    ))}
+  </div>
+</SectionWrapper>

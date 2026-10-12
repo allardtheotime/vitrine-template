@@ -1,0 +1,111 @@
+---
+// Variante client de Navbar.astro (DESIGN.md §Structure 1, §6) : en-tête sombre (vert profond),
+// logo SVG clair, bouton or « Voir la carte » + téléphone. Repli téléphone
+// conservé : le lien « Appeler » n'existe que si `phone` est fourni.
+import Icon from '../ui/Icon.astro';
+
+export interface Props {
+  siteName: string;
+  logo?: string;
+  links: { label: string; href: string }[];
+  ctaText?: string;
+  ctaHref?: string;
+  phone?: string;
+}
+
+const { siteName, logo, links, ctaText, ctaHref = '/#carte', phone } = Astro.props;
+const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
+---
+
+<header class="sticky top-0 z-40 bg-[var(--color-secondary)] shadow-[var(--shadow-2)]">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 lg:px-8" aria-label="Navigation principale">
+    <a href="/" class="flex shrink-0 items-center" aria-label={`${siteName}, accueil`}>
+      {logo ? (
+        <img src={logo} alt={siteName} class="h-11 w-auto sm:h-12" width="280" height="48" />
+      ) : (
+        <span class="font-display text-xl text-primary">{siteName}</span>
+      )}
+    </a>
+
+    <ul class="hidden items-center gap-6 lg:flex">
+      {links.map((link) => (
+        <li>
+          <a href={link.href} class="inline-flex items-center whitespace-nowrap text-sm font-medium text-[var(--color-on-dark-muted)] transition-colors duration-200 hover:text-primary">
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="hidden items-center gap-3 lg:flex">
+      {tel && (
+        <a
+          href={tel}
+          class="btn-press inline-flex h-11 w-11 items-center justify-center rounded-full border-[1.5px] border-primary text-[var(--color-on-dark)] transition-colors duration-200 hover:bg-[color-mix(in_srgb,var(--color-primary)_15%,transparent)]"
+          aria-label={`Appeler le ${phone}`}
+          title={phone}
+        >
+          <Icon name="phone" class="h-4 w-4" />
+        </a>
+      )}
+      {ctaText && (
+        <a
+          href={ctaHref}
+          class="btn-press inline-flex items-center justify-center whitespace-nowrap rounded-full bg-primary px-5 text-sm font-semibold text-[var(--color-text)] transition-colors duration-200 hover:bg-[var(--color-primary-hover)]"
+        >
+          {ctaText}
+        </a>
+      )}
+    </div>
+
+    <button
+      id="mobile-menu-toggle"
+      class="inline-flex min-w-[44px] items-center justify-center rounded-md p-2 text-[var(--color-on-dark)] lg:hidden"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" />
+      </svg>
+    </button>
+  </nav>
+
+  <ul id="mobile-menu" class="hidden flex-col gap-1 border-t border-[color-mix(in_srgb,var(--color-primary)_30%,transparent)] bg-[var(--color-secondary)] px-5 pb-4 pt-2 lg:hidden">
+    {links.map((link) => (
+      <li>
+        <a href={link.href} class="flex items-center rounded-md px-3 py-3 text-base font-medium text-[var(--color-on-dark)] hover:bg-[color-mix(in_srgb,var(--color-primary)_15%,transparent)]">
+          {link.label}
+        </a>
+      </li>
+    ))}
+    {tel && (
+      <li class="mt-2">
+        <a href={tel} class="flex items-center justify-center gap-2 rounded-full border-[1.5px] border-primary px-3 py-3 text-sm font-semibold text-[var(--color-on-dark)]">
+          <Icon name="phone" class="h-4 w-4" />
+          Appeler le {phone}
+        </a>
+      </li>
+    )}
+  </ul>
+</header>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+  });
+
+  // Referme le menu après un clic sur n'importe quel lien à l'intérieur
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      toggle?.setAttribute('aria-expanded', 'false');
+      toggle?.setAttribute('aria-label', 'Ouvrir le menu');
+    });
+  });
+</script>

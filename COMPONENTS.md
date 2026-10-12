@@ -57,9 +57,10 @@ Chaque composant est documenté avec :
 ---
 
 ## Composants créés pour des clients spécifiques
-# Cette section est vide au départ.
-# Elle se remplit automatiquement à chaque nouveau composant créé sur un projet client.
-# Règle de promotion : un composant remonte dans le template après 3 utilisations sur des projets différents.
+# Le fichier de chaque composant ci-dessous est copié dans `library/` du template (même chemin
+# relatif) : le prendre là, pas dans le repo d'un ancien client. Voir library/README.md.
+# Elle se remplit à chaque nouveau composant créé sur un projet client (copie dans library/ + ligne ici).
+# Règle de promotion : un composant remonte dans `src/` après 3 utilisations sur des projets différents.
 
 | Composant | Fichier | Props | Usage | Clients | Statut |
 |-----------|---------|-------|-------|---------|--------|
@@ -88,7 +89,7 @@ Chaque composant est documenté avec :
 | ConceptCards | `src/components/sections/ConceptCards.astro` | Variante de Services : cartes à icône or dans un cercle `--color-secondary`, élévation au survol | lilot-pates-namur | Client |
 | AboutStory | `src/components/sections/AboutStory.astro` | Variante d'About : photo 4/5 + vignette d'archive en surimpression (`image2?`, `image2Caption?`), chiffres clés en Playfair | lilot-pates-namur | Client |
 | TestimonialsQuotes | `src/components/sections/TestimonialsQuotes.astro` | Variante de Testimonials : note globale réelle (`ratingValue?`, `ratingLabel?`) avec étoiles partielles, `rating` facultatif par citation (aucune étoile inventée), `source?` | lilot-pates-namur | Client |
-| DemoNoticeThemed | `src/components/ui/DemoNoticeThemed.astro` | Couleurs du thème (surface, texte) au lieu des gris codés en dur, bouton pilule texte foncé sur `primary` (contraste AA avec un primaire clair) | lilot-pates-namur | Client |
+| DemoNoticeThemed | `src/components/ui/DemoNoticeThemed.astro` | Bouton pilule texte foncé sur `primary` (contraste AA avec un primaire clair). Le correctif des couleurs du thème est reporté dans le `DemoNotice` boilerplate : n'utiliser cette variante que pour un primaire clair | lilot-pates-namur | Client (non copié dans library/) |
 | ContactHours | `src/components/sections/ContactHours.astro` | Variante de Contact : tableau d'horaires (`openingHours[]{day, hours, note?}`), accès, bouton Itinéraire (Google Maps), titres pilotés par Sanity, même formulaire/anti-spam, bouton désactivé pendant l'envoi | lilot-pates-namur | Client |
 
 ---

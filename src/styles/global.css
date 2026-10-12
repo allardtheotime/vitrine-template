@@ -30,6 +30,14 @@
   --color-focus: #1D4ED8;
   --font-family: 'Inter', system-ui, sans-serif;
   --font-family-display: 'Inter', system-ui, sans-serif;
+  /* Hors thème Sanity, utilisées par les composants de library/ : texte sur fond
+     sombre, erreur de formulaire, élévations. À surcharger dans le global.css du
+     client si DESIGN.md les précise. */
+  --color-on-dark: #F9FAFB;
+  --color-on-dark-muted: rgba(249, 250, 251, 0.75);
+  --color-error: #B3261E;
+  --shadow-1: 0 1px 2px rgba(17, 24, 39, 0.06), 0 2px 8px rgba(17, 24, 39, 0.05);
+  --shadow-2: 0 6px 20px rgba(17, 24, 39, 0.12);
 }
 
 /* Pas de règle "font-family" ici : Tailwind Preflight (@tailwind base ci-dessus)
@@ -68,4 +76,30 @@ button, a, input, textarea {
 /* Bouton actif : léger enfoncement au clic */
 .btn-press:active {
   transform: scale(0.98);
+}
+
+/* Surtitre au-dessus d'un titre de section (utilisé par library/) */
+.eyebrow {
+  font-family: var(--font-family), system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Aucune transition si l'utilisateur les refuse. Déclarée après @tailwind
+   utilities : à spécificité égale, elle l'emporte sans !important. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [class*='transition'],
+  [class*='duration'] {
+    transition: none;
+  }
+  [class*='group-hover:scale'],
+  [class*='hover:-translate'] {
+    transform: none;
+  }
 }

@@ -1,0 +1,103 @@
+---
+// Variante client de Hero.astro (DESIGN.md §Structure 2) : fond vert profond,
+// texte à gauche, photo de plat à droite (au-dessus du texte sur mobile),
+// surtitre + badges régimes + deux CTA (carte, téléphone) + encadré « menu du
+// mois » optionnel (rendu seulement s'il contient au moins un plat).
+import PillButton from '../ui/PillButton.astro';
+import Icon from '../ui/Icon.astro';
+
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  phone?: string;
+  badges?: string[];
+  image?: string;
+  imageSrcset?: string;
+  imageAlt?: string;
+  monthly?: { title?: string; label?: string; text?: string; price?: string; items: { name: string; description?: string; price?: string }[] };
+}
+
+const {
+  eyebrow,
+  title,
+  subtitle,
+  ctaText,
+  ctaLink = '#carte',
+  phone,
+  badges = [],
+  image,
+  imageSrcset,
+  imageAlt,
+  monthly,
+} = Astro.props;
+const showMonthly = monthly && monthly.items && monthly.items.length > 0;
+const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
+---
+
+<section class="bg-[var(--color-secondary)] text-[var(--color-on-dark)]">
+  <div class="mx-auto grid max-w-6xl md:grid-cols-2 md:items-stretch lg:px-8">
+    {image && (
+      <div class="relative h-[42vh] min-h-[260px] md:order-2 md:h-auto md:max-h-[min(88vh,760px)] md:min-h-[520px]">
+        <img
+          src={image}
+          srcset={imageSrcset}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          alt={imageAlt ?? ''}
+          loading="eager"
+          fetchpriority="high"
+          class="h-full w-full object-cover object-[center_60%]"
+        />
+      </div>
+    )}
+
+    <div class="flex flex-col justify-center px-5 py-12 md:order-1 md:py-20 md:pr-12 lg:pl-0">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 class="mt-4 text-[var(--color-on-dark)]">{title}</h1>
+      {subtitle && <p class="mt-5 max-w-md text-lg text-[var(--color-on-dark-muted)]">{subtitle}</p>}
+
+      {badges.length > 0 && (
+        <ul class="mt-6 flex flex-wrap gap-2" aria-label="Pâtes disponibles">
+          {badges.map((badge, i) => (
+            <li class="inline-flex items-center gap-1.5 rounded-full border border-primary px-3 py-1 text-sm text-[var(--color-on-dark)]">
+              {i === 0 && <Icon name="wheat" class="h-4 w-4 text-primary" />}
+              {badge}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        {ctaText && <PillButton href={ctaLink} size="lg">{ctaText}</PillButton>}
+        {tel && (
+          <PillButton href={tel} variant="outline-dark" size="lg">
+            <Icon name="phone" class="h-5 w-5" />
+            {phone}
+          </PillButton>
+        )}
+      </div>
+
+      {showMonthly && (
+        <aside class="mt-10 rounded-2xl border border-primary bg-[var(--color-footer)] p-5" aria-label={monthly!.title}>
+          <div class="flex items-baseline justify-between gap-4">
+            <p class="font-display text-lg font-semibold italic text-primary">{monthly!.title}</p>
+            {monthly!.label && <p class="eyebrow">{monthly!.label}</p>}
+          </div>
+          {monthly!.text && <p class="mt-1 text-sm text-[var(--color-on-dark-muted)]">{monthly!.text}</p>}
+          <ul class="mt-3 space-y-1.5">
+            {monthly!.items.map((it) => (
+              <li class="text-sm">
+                <span class="font-semibold text-[var(--color-on-dark)]">{it.name}</span>
+                {it.description && <span class="text-[var(--color-on-dark-muted)]"> · {it.description}</span>}
+                {it.price && <span class="tabular text-primary"> · {it.price}</span>}
+              </li>
+            ))}
+          </ul>
+          {monthly!.price && <p class="tabular mt-3 font-display text-xl font-bold text-primary">{monthly!.price}</p>}
+        </aside>
+      )}
+    </div>
+  </div>
+</section>

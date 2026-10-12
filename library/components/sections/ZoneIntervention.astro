@@ -1,0 +1,27 @@
+---
+// Section spécifique à ce projet (cf. DESIGN.md §Structure, point 5) — pas encore
+// un type générable du template mutualisé. Rôle : rassurer sur la proximité
+// géographique, argument mis en avant par tous les concurrents visités.
+import SectionWrapper from '../ui/SectionWrapper.astro';
+import Badge from '../ui/Badge.astro';
+
+export interface Props {
+  title: string;
+  text: string;
+  areas: string[];
+}
+
+const { title, text, areas } = Astro.props;
+---
+
+<SectionWrapper id="zone" bg="bg">
+  <div class="text-center">
+    <h2 class="text-[var(--color-text)]">{title}</h2>
+    <p class="mx-auto mt-3 max-w-2xl text-[var(--color-text-muted)]">{text}</p>
+    <div class="mt-6 flex flex-wrap justify-center gap-2">
+      {areas.map((area) => (
+        <Badge text={area} color="secondary" />
+      ))}
+    </div>
+  </div>
+</SectionWrapper>

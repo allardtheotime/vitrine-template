@@ -92,6 +92,9 @@ src/
 sanity-schema/        ← schéma Sanity réutilisable, À COPIER dans studio/schemaTypes/
                          de chaque nouveau client (pas un Studio fonctionnel en soi,
                          pas de projectId réel ici) — cf. §5
+library/              ← composants déjà écrits pour des clients (non branchés), à copier
+                         dans src/ d'un client au besoin — cf. library/README.md. Exclu
+                         du build et de tsconfig. Absent des sites clients (supprimé au clone)
 studio/                ← généré par `sanity init` lors du build de CHAQUE client,
                           absent du template lui-même
 
@@ -237,7 +240,9 @@ Si une variation est nécessaire, créer un nouveau composant avec un nom explic
   qu'aucun email ne parte, sans jamais révéler la détection. Ne jamais dupliquer cette
   logique ailleurs ni la retirer.
 - Variables d'environnement requises côté Vercel (jamais commitées) : `RESEND_API_KEY`,
-  `CONTACT_TO_EMAIL`, `SITE_NAME` (optionnelle) — voir `.env.example`.
+  `CONTACT_TO_EMAIL`, `SITE_NAME` et `CONTACT_FROM_EMAIL` (optionnelles) — voir `.env.example`.
+  L'expéditeur reste `onboarding@resend.dev` tant que le domaine du client n'est pas vérifié
+  dans Resend ; `reply_to` est toujours l'email du visiteur.
 - Aucun webhook externe (n8n ou autre) : ce projet a définitivement abandonné cette
   dépendance au profit d'un backend serverless auto-hébergé sur Vercel.
 - Le composant `Contact.astro` gère déjà l'appel fetch, le succès et l'erreur — ne pas
@@ -340,7 +345,10 @@ Web Analytics collectent des données). Hébergeur mentionné : Vercel Inc.
 6. Mettre à jour src/lib/sanity.ts (vrai projectId) et astro.config.mjs (site: réel)
 7. Identifier les sections visibles (champs *Visible du schéma)
 8. Vérifier : npm run build passe sans erreur
-9. Créer les composants manquants si nécessaire, mettre à jour COMPONENTS.md
+9. Composants manquants : d'abord les copier depuis library/ (cf. library/README.md), sinon
+   les créer comme variantes dans src/ du client — jamais en modifiant un fichier
+   boilerplate. Mettre à jour COMPONENTS.md, et copier tout nouveau composant réutilisable
+   dans library/ du template
 10. Vérifier : aucun texte hardcodé, aucune couleur hardcodée, alt sur toutes les images,
     aucun "à compléter" visible
 ```

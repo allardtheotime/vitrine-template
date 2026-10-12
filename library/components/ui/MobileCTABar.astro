@@ -1,0 +1,35 @@
+---
+// Composant client (déjà créé pour detongre-construction-virton, cf. COMPONENTS.md),
+// adapté ici : second bouton vers la carte au lieu d'un CTA formulaire.
+// Barre fixe en bas d'écran, mobile/tablette uniquement (masquée dès lg).
+// Repli téléphone : le bouton « Appeler » n'existe que si `phone` est fourni.
+import Icon from './Icon.astro';
+
+export interface Props {
+  ctaText: string;
+  ctaHref?: string;
+  phone?: string;
+}
+
+const { ctaText, ctaHref = '#contact', phone } = Astro.props;
+const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
+---
+
+<div class="fixed inset-x-0 bottom-0 z-40 flex gap-2 bg-[var(--color-secondary)] p-3 shadow-[var(--shadow-2)] lg:hidden">
+  {tel && (
+    <a
+      href={tel}
+      class="btn-press flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full border-[1.5px] border-primary px-4 text-sm font-semibold text-[var(--color-on-dark)]"
+    >
+      <Icon name="phone" class="h-4 w-4" />
+      Appeler
+    </a>
+  )}
+  <a
+    href={ctaHref}
+    class="btn-press flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-primary-hover)]"
+  >
+    <Icon name="utensils" class="h-4 w-4" />
+    {ctaText}
+  </a>
+</div>
