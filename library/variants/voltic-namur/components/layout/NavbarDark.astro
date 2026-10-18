@@ -1,0 +1,126 @@
+---
+// Variante client de Navbar.astro (reprise de library/NavbarDark, DESIGN.md
+// §Structure 1) : en-tête sombre translucide, logo SVG VOLTIC, CTA pilule rouge
+// « Booker une date ». Repli téléphone : tant qu'aucun numéro n'est fourni, le
+// bouton rond « Appeler » est remplacé par un bouton rond Instagram.
+import Icon from '../ui/Icon.astro';
+import InstagramIcon from '../ui/InstagramIcon.astro';
+
+export interface Props {
+  siteName: string;
+  logo?: string;
+  links: { label: string; href: string }[];
+  ctaText?: string;
+  ctaHref?: string;
+  phone?: string;
+  instagram?: string;
+}
+
+const { siteName, logo, links, ctaText, ctaHref = '#booking', phone, instagram } = Astro.props;
+const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
+---
+
+<header class="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-bg)_88%,transparent)] backdrop-blur-md">
+  <nav class="mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-4 py-3 sm:px-6" aria-label="Navigation principale">
+    <a href="/" class="flex shrink-0 items-center" aria-label={`${siteName}, accueil`}>
+      {logo ? (
+        <img src={logo} alt={siteName} class="h-5 w-auto sm:h-6" width="150" height="24" />
+      ) : (
+        <span class="font-display text-xl text-[var(--color-text)]">{siteName}</span>
+      )}
+    </a>
+
+    <ul class="hidden items-center gap-7 lg:flex">
+      {links.map((link) => (
+        <li>
+          <a href={link.href} class="inline-flex items-center whitespace-nowrap text-sm font-medium text-[var(--color-text-muted)] transition-colors duration-200 hover:text-[var(--color-text)]">
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="hidden items-center gap-3 lg:flex">
+      {tel ? (
+        <a
+          href={tel}
+          class="btn-press inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text)] transition-colors duration-200 hover:border-[var(--color-secondary)]"
+          aria-label={`Appeler le ${phone}`}
+          title={phone}
+        >
+          <Icon name="phone" class="h-4 w-4" />
+        </a>
+      ) : instagram && (
+        <a
+          href={instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-press inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] text-[var(--color-text)] transition-colors duration-200 hover:border-[var(--color-secondary)]"
+          aria-label={`Instagram de ${siteName} (nouvel onglet)`}
+        >
+          <InstagramIcon class="h-[18px] w-[18px]" />
+        </a>
+      )}
+      {ctaText && (
+        <a
+          href={ctaHref}
+          class="btn-press inline-flex items-center justify-center whitespace-nowrap rounded-full bg-primary px-5 text-sm font-semibold text-white transition-[background-color,box-shadow] duration-200 hover:bg-[var(--color-primary-hover)] hover:shadow-[var(--glow)]"
+        >
+          {ctaText}
+        </a>
+      )}
+    </div>
+
+    <button
+      id="mobile-menu-toggle"
+      class="inline-flex min-w-[44px] items-center justify-center rounded-md p-2 text-[var(--color-text)] lg:hidden"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" />
+      </svg>
+    </button>
+  </nav>
+
+  <ul id="mobile-menu" class="hidden flex-col gap-1 border-t border-[var(--color-border)] bg-[var(--color-bg)] px-4 pb-4 pt-2 lg:hidden">
+    {links.map((link) => (
+      <li>
+        <a href={link.href} class="flex items-center rounded-md px-3 py-3 text-base font-medium text-[var(--color-text)] hover:bg-[var(--color-surface)]">
+          {link.label}
+        </a>
+      </li>
+    ))}
+    {tel && (
+      <li class="mt-2">
+        <a href={tel} class="flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] px-3 py-3 text-sm font-semibold text-[var(--color-text)]">
+          <Icon name="phone" class="h-4 w-4" />
+          {phone}
+        </a>
+      </li>
+    )}
+  </ul>
+</header>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = menu?.classList.toggle('hidden') === false;
+    menu?.classList.toggle('flex', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    toggle.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+  });
+
+  // Referme le menu après un clic sur n'importe quel lien à l'intérieur
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      menu.classList.remove('flex');
+      toggle?.setAttribute('aria-expanded', 'false');
+      toggle?.setAttribute('aria-label', 'Ouvrir le menu');
+    });
+  });
+</script>

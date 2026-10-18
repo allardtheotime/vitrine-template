@@ -1,0 +1,24 @@
+---
+// En-tête de section numéroté (DESIGN.md §Structure, inspiré de gordoszn.com) :
+// sur-titre « 01 — Prochaines dates » puis titre h2 et sous-titre facultatif.
+// Le numéro est calculé par la page selon les sections visibles.
+export interface Props {
+  number?: string;
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+  id?: string;
+}
+
+const { number, eyebrow, title, subtitle, align = 'left', id } = Astro.props;
+const alignClass = align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-3xl';
+---
+
+<div class={alignClass}>
+  {(number || eyebrow) && (
+    <p class="eyebrow tabular">{[number, eyebrow].filter(Boolean).join(' — ')}</p>
+  )}
+  <h2 id={id} class="mt-3 text-[var(--color-text)]">{title}</h2>
+  {subtitle && <p class="mt-4 text-lg text-[var(--color-text-muted)]">{subtitle}</p>}
+</div>

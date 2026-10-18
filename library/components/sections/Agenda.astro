@@ -1,0 +1,54 @@
+---
+// Section propre à ce client (DESIGN.md §Structure 4) : dates à venir, ou à défaut
+// les dates du dernier mois joué avec son libellé (« Septembre 2026 »), pour ne
+// jamais afficher une section vide. La première date à venir est mise en avant.
+import SectionWrapper from '../ui/SectionWrapper.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+export interface Props {
+  number?: string;
+  eyebrow?: string;
+  title: string;
+  monthLabel?: string;
+  nextLabel?: string;
+  mode?: 'upcoming' | 'past';
+  items: { date: string; venue?: string; city: string }[];
+}
+
+const { number, eyebrow, title, monthLabel, nextLabel, mode = 'upcoming', items = [] } = Astro.props;
+
+const fmtDay = new Intl.DateTimeFormat('fr-BE', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
+const fmtWeekday = new Intl.DateTimeFormat('fr-BE', { weekday: 'short', timeZone: 'UTC' });
+const rows = items.map((it) => {
+  const d = new Date(`${it.date}T00:00:00Z`);
+  return { ...it, day: fmtDay.format(d), weekday: fmtWeekday.format(d).replace('.', '') };
+});
+---
+
+<SectionWrapper id="dates" bg="bg">
+  <div class="reveal">
+    <SectionHeading number={number} eyebrow={eyebrow} title={title} subtitle={monthLabel} />
+
+    <ol class="mt-10 border-t border-[var(--color-border)]">
+      {rows.map((row, i) => {
+        const highlight = mode === 'upcoming' && i === 0;
+        return (
+          <li class={`grid grid-cols-[auto_1fr] items-baseline gap-x-5 gap-y-1 border-b border-[var(--color-border)] px-2 py-4 sm:grid-cols-[9rem_1fr_auto] sm:items-center sm:px-4 ${highlight ? 'bg-[var(--color-surface)]' : ''}`}>
+            <p class="flex items-center gap-3">
+              <span class="h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden="true"></span>
+              <time datetime={row.date} class="tabular font-display text-lg font-semibold text-[var(--color-text)] sm:text-xl">{row.day}</time>
+              <span class="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">{row.weekday}</span>
+            </p>
+            <p class="col-start-2 font-semibold text-[var(--color-text)] sm:col-start-auto">
+              {row.venue || row.city}
+              {highlight && nextLabel && (
+                <span class="ml-3 rounded-full bg-primary px-2.5 py-0.5 align-middle text-xs font-semibold text-white">{nextLabel}</span>
+              )}
+            </p>
+            {row.venue && <p class="col-start-2 text-sm text-[var(--color-text-muted)] sm:col-start-auto sm:text-right">{row.city}</p>}
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</SectionWrapper>

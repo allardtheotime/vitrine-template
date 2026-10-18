@@ -1,0 +1,93 @@
+---
+// Variante client de Footer.astro (reprise de library/FooterDark, DESIGN.md
+// §Structure 9) : logo + accroche, liens d'ancre, réseaux, mention légale avec
+// BCE et TVA. Pas de filet tricolore (propre à un autre client). Repli conservé :
+// chaque ligne dont la donnée est absente (téléphone, email…) est omise.
+import Icon from '../ui/Icon.astro';
+import InstagramIcon from '../ui/InstagramIcon.astro';
+
+export interface Props {
+  siteName: string;
+  logo?: string;
+  tagline?: string;
+  links?: { label: string; href: string }[];
+  phone?: string;
+  email?: string;
+  zone?: string;
+  instagram?: string;
+  tiktok?: string;
+  facebook?: string;
+  legalName?: string;
+  legalForm?: string;
+  bceNumber?: string;
+  vatNumber?: string;
+}
+
+const { siteName, logo, tagline, links = [], phone, email, zone, instagram, tiktok, facebook, legalName, legalForm, bceNumber, vatNumber } = Astro.props;
+const year = new Date().getFullYear();
+const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
+const instagramHandle = instagram?.replace(/\/$/, '').split('/').pop();
+const linkClass = 'inline-flex items-center gap-2 transition-colors duration-200 hover:text-[var(--color-text)]';
+---
+
+<footer class="border-t border-[var(--color-border)] bg-[var(--color-footer)] pb-28 pt-14 text-sm text-[var(--color-text-muted)] lg:pb-12">
+  <div class="mx-auto max-w-[1200px] px-4 sm:px-6">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        {logo ? (
+          <img src={logo} alt={siteName} class="h-6 w-auto" width="150" height="24" loading="lazy" />
+        ) : (
+          <p class="font-display text-xl text-[var(--color-text)]">{siteName}</p>
+        )}
+        {tagline && <p class="mt-4">{tagline}</p>}
+        {zone && (
+          <p class="mt-2 flex items-center gap-2">
+            <Icon name="map-pin" class="h-4 w-4 shrink-0 text-[var(--color-primary-text)]" />
+            {zone}
+          </p>
+        )}
+      </div>
+
+      {links.length > 0 && (
+        <ul class="grid grid-cols-2 gap-x-6 gap-y-1 self-start">
+          {links.map((link) => (
+            <li><a href={link.href} class={linkClass}>{link.label}</a></li>
+          ))}
+        </ul>
+      )}
+
+      <ul class="space-y-1 md:text-right">
+        {instagram && (
+          <li>
+            <a href={instagram} target="_blank" rel="noopener noreferrer" class={linkClass} aria-label={`Instagram @${instagramHandle} (nouvel onglet)`}>
+              <InstagramIcon class="h-4 w-4 text-[var(--color-primary-text)]" />
+              @{instagramHandle}
+            </a>
+          </li>
+        )}
+        {tiktok && (
+          <li><a href={tiktok} target="_blank" rel="noopener noreferrer" class={linkClass}>TikTok</a></li>
+        )}
+        {facebook && (
+          <li><a href={facebook} target="_blank" rel="noopener noreferrer" class={linkClass}>Facebook</a></li>
+        )}
+        {tel && (
+          <li><a href={tel} class={linkClass}><Icon name="phone" class="h-4 w-4 text-[var(--color-primary-text)]" />{phone}</a></li>
+        )}
+        {email && (
+          <li><a href={`mailto:${email}`} class={linkClass}><Icon name="mail" class="h-4 w-4 text-[var(--color-primary-text)]" />{email}</a></li>
+        )}
+      </ul>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-3 border-t border-[var(--color-border)] pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
+      <p>
+        &copy; {year} {legalName || siteName}{legalForm ? ` · ${legalForm}` : ''}{bceNumber ? ` · BCE ${bceNumber}` : ''}{vatNumber ? ` · TVA ${vatNumber}` : ''}
+      </p>
+      <div class="flex items-center gap-5">
+        <a href="/mentions-legales" class={linkClass}>Mentions légales</a>
+        <a href="/politique-de-confidentialite" class={linkClass}>Confidentialité</a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,169 @@
+---
+// Variante client de BaseLayout.astro (reprise de library/layouts/RestaurantLayout,
+// DESIGN.md) : site entièrement sombre, en-tête et pied de page sombres, bouton
+// Instagram à la place du téléphone tant qu'aucun numéro n'est fourni, barre
+// d'action mobile, titre SEO dédié.
+import NavbarDark from '../components/layout/NavbarDark.astro';
+import FooterDark from '../components/layout/FooterDark.astro';
+import MobileCTABar from '../components/ui/MobileCTABar.astro';
+import DemoNotice from '../components/ui/DemoNotice.astro';
+import Analytics from '@vercel/analytics/astro';
+import '../styles/global.css';
+
+export interface Props {
+  siteName: string;
+  logo?: string;
+  tagline: string;
+  seoTitle?: string;
+  primaryColor: string;
+  primaryHoverColor?: string;
+  primaryTextColor?: string;
+  secondaryColor: string;
+  fontFamily: string;
+  fontFamilyDisplay?: string;
+  bgColor?: string;
+  surfaceColor?: string;
+  footerColor?: string;
+  textColor?: string;
+  textMutedColor?: string;
+  borderColor?: string;
+  focusColor?: string;
+  navLinks: { label: string; href: string }[];
+  phone?: string;
+  email?: string;
+  zone?: string;
+  instagram?: string;
+  instagramLabel?: string;
+  tiktok?: string;
+  facebook?: string;
+  legalName?: string;
+  legalForm?: string;
+  bceNumber?: string;
+  vatNumber?: string;
+  isDemo?: boolean;
+  ogImage?: string;
+  navCtaText?: string;
+  navCtaLink?: string;
+}
+
+const {
+  siteName,
+  logo,
+  tagline,
+  seoTitle,
+  primaryColor,
+  primaryHoverColor = primaryColor,
+  primaryTextColor = primaryColor,
+  secondaryColor,
+  fontFamily,
+  fontFamilyDisplay = fontFamily,
+  bgColor = '#0B0B0F',
+  surfaceColor = '#15151C',
+  footerColor = '#060608',
+  textColor = '#F2F0EC',
+  textMutedColor = '#A6A3AE',
+  borderColor = '#2A2A33',
+  focusColor = primaryColor,
+  navLinks,
+  phone,
+  email,
+  zone,
+  instagram,
+  instagramLabel,
+  tiktok,
+  facebook,
+  legalName,
+  legalForm,
+  bceNumber,
+  vatNumber,
+  isDemo = false,
+  ogImage,
+  navCtaText,
+  navCtaLink = '#booking',
+} = Astro.props;
+
+const pageTitle = seoTitle || `${siteName} · ${tagline}`;
+const absoluteOgImage = ogImage ? new URL(ogImage, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={tagline} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={tagline} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:locale" content="fr_BE" />
+    {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={tagline} />
+    {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
+    <link rel="canonical" href={Astro.url} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content={bgColor} />
+    <meta name="color-scheme" content="dark" />
+    <style define:vars={{
+      colorPrimary: primaryColor,
+      colorPrimaryHover: primaryHoverColor,
+      colorPrimaryText: primaryTextColor,
+      colorSecondary: secondaryColor,
+      colorBg: bgColor,
+      colorSurface: surfaceColor,
+      colorFooter: footerColor,
+      colorText: textColor,
+      colorTextMuted: textMutedColor,
+      colorBorder: borderColor,
+      colorFocus: focusColor,
+      fontFamily,
+      fontFamilyDisplay,
+    }}>
+      :root {
+        --color-primary: var(--colorPrimary);
+        --color-primary-hover: var(--colorPrimaryHover);
+        --color-primary-text: var(--colorPrimaryText);
+        --color-secondary: var(--colorSecondary);
+        --color-bg: var(--colorBg);
+        --color-surface: var(--colorSurface);
+        --color-footer: var(--colorFooter);
+        --color-text: var(--colorText);
+        --color-text-muted: var(--colorTextMuted);
+        --color-border: var(--colorBorder);
+        --color-focus: var(--colorFocus);
+        --font-family: var(--fontFamily);
+        --font-family-display: var(--fontFamilyDisplay);
+      }
+    </style>
+  </head>
+  <body class="flex min-h-screen flex-col bg-[var(--color-bg)] text-[var(--color-text)] antialiased">
+    <a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:inline-flex focus:items-center focus:rounded-full focus:bg-primary focus:px-4 focus:text-white">Aller au contenu</a>
+    <NavbarDark siteName={siteName} logo={logo} links={navLinks} ctaText={navCtaText} ctaHref={navCtaLink} phone={phone} instagram={instagram} />
+    <main id="contenu" class="flex-1">
+      <slot />
+    </main>
+    <FooterDark
+      siteName={siteName}
+      logo={logo}
+      tagline={tagline}
+      links={navLinks}
+      phone={phone}
+      email={email}
+      zone={zone}
+      instagram={instagram}
+      tiktok={tiktok}
+      facebook={facebook}
+      legalName={legalName}
+      legalForm={legalForm}
+      bceNumber={bceNumber}
+      vatNumber={vatNumber}
+    />
+    {navCtaText && <MobileCTABar ctaText={navCtaText} ctaHref={navCtaLink} phone={phone} instagram={instagram} instagramLabel={instagramLabel} />}
+    <DemoNotice isDemo={isDemo} />
+    <Analytics />
+  </body>
+</html>

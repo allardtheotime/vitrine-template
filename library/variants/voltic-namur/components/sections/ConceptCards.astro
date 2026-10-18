@@ -1,0 +1,47 @@
+---
+// Variante de Services.astro (reprise de library/ConceptCards, DESIGN.md
+// §Structure 5, §4) : cartes sombres à icône Lucide dans un cercle à contour rouge,
+// bordure rouge et élévation au survol, phrase et CTA sous les cartes.
+import SectionWrapper from '../ui/SectionWrapper.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import PillButton from '../ui/PillButton.astro';
+import Icon from '../ui/Icon.astro';
+
+export interface Props {
+  number?: string;
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  items: { icon: string; title: string; description: string }[];
+  note?: string;
+  ctaText?: string;
+  ctaHref?: string;
+}
+
+const { number, eyebrow, title, subtitle, items, note, ctaText, ctaHref = '#booking' } = Astro.props;
+---
+
+<SectionWrapper id="prestations" bg="surface">
+  <div class="reveal">
+    <SectionHeading number={number} eyebrow={eyebrow} title={title} subtitle={subtitle} />
+
+    <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {items.map((item) => (
+        <li class="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] p-6 shadow-[var(--shadow-1)] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-primary hover:shadow-[var(--shadow-2)]">
+          <span class="inline-flex h-12 w-12 items-center justify-center rounded-full border-[1.5px] border-primary text-[var(--color-primary-text)]">
+            <Icon name={item.icon} class="h-6 w-6" />
+          </span>
+          <h3 class="mt-5 text-[var(--color-text)]">{item.title}</h3>
+          <p class="mt-2 text-[var(--color-text-muted)]">{item.description}</p>
+        </li>
+      ))}
+    </ul>
+
+    {(note || ctaText) && (
+      <div class="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
+        {note && <p class="max-w-xl text-[var(--color-text-muted)]">{note}</p>}
+        {ctaText && <PillButton href={ctaHref}>{ctaText}</PillButton>}
+      </div>
+    )}
+  </div>
+</SectionWrapper>

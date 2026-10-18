@@ -1,0 +1,221 @@
+---
+// Variante client de Contact.astro (reprise du formulaire de library/ContactHours,
+// DESIGN.md §Structure 8) : demande de booking avec date, lieu, type d'événement
+// et nombre de personnes. Même anti-spam (champ piège `company`, délai
+// `loaded_at`) et même appel à /api/contact : les champs propres au booking sont
+// regroupés en tête du message, l'API reste celle du template.
+// Repli coordonnées : ni téléphone ni email affichés tant qu'ils ne sont pas
+// fournis ; la colonne de droite propose Instagram et la zone à la place.
+import SectionWrapper from '../ui/SectionWrapper.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import PillButton from '../ui/PillButton.astro';
+import Icon from '../ui/Icon.astro';
+import InstagramIcon from '../ui/InstagramIcon.astro';
+
+export interface Props {
+  number?: string;
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+  eventTypes?: string[];
+  submitText?: string;
+  success?: string;
+  error?: string;
+  zone?: string;
+  instagram?: string;
+  instagramLabel?: string;
+  phone?: string;
+  email?: string;
+  pressKitUrl?: string;
+  pressKitLabel?: string;
+}
+
+const {
+  number,
+  eyebrow,
+  title,
+  intro,
+  eventTypes = [],
+  submitText = 'Envoyer',
+  success,
+  error,
+  zone,
+  instagram,
+  instagramLabel,
+  phone,
+  email,
+  pressKitUrl,
+  pressKitLabel,
+} = Astro.props;
+const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
+const field = 'mt-1.5 w-full min-h-[48px] rounded-[10px] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-[var(--color-text)] transition-colors focus:border-[var(--color-focus)]';
+const label = 'block text-sm font-medium text-[var(--color-text)]';
+---
+
+<SectionWrapper id="booking" bg="bg">
+  <div class="reveal grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <SectionHeading number={number} eyebrow={eyebrow} title={title} subtitle={intro} />
+
+      <ul class="mt-8 space-y-4">
+        {zone && (
+          <li class="flex items-center gap-3 text-[var(--color-text)]">
+            <Icon name="map-pin" class="h-5 w-5 shrink-0 text-[var(--color-primary-text)]" />
+            {zone}
+          </li>
+        )}
+        {tel && (
+          <li><a href={tel} class="inline-flex items-center gap-3 font-semibold text-[var(--color-text)]"><Icon name="phone" class="h-5 w-5 text-[var(--color-primary-text)]" />{phone}</a></li>
+        )}
+        {email && (
+          <li><a href={`mailto:${email}`} class="inline-flex items-center gap-3 font-semibold text-[var(--color-text)]"><Icon name="mail" class="h-5 w-5 text-[var(--color-primary-text)]" />{email}</a></li>
+        )}
+      </ul>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
+        {instagram && instagramLabel && (
+          <PillButton href={instagram} variant="outline-dark" target="_blank" rel="noopener noreferrer">
+            <InstagramIcon class="h-4 w-4" />
+            {instagramLabel}
+          </PillButton>
+        )}
+        {pressKitUrl && pressKitLabel && (
+          <PillButton href={pressKitUrl} variant="outline-dark" download>
+            <Icon name="download" class="h-4 w-4" />
+            {pressKitLabel}
+          </PillButton>
+        )}
+      </div>
+    </div>
+
+    <form id="contact-form" class="space-y-4 self-start rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-1)] sm:p-8 lg:col-span-7" aria-label={title} novalidate>
+      <!-- Anti-spam : champ piège invisible pour les humains, souvent rempli par les
+           robots qui remplissent tous les champs sans exécuter le CSS — cf. api/contact.ts -->
+      <div class="hidden" aria-hidden="true">
+        <label for="company">Ne pas remplir ce champ</label>
+        <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <input type="hidden" id="form-loaded-at" name="loaded_at" value="" />
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="name" class={label}>Nom</label>
+          <input id="name" name="name" type="text" required autocomplete="name" class={field} />
+        </div>
+        <div>
+          <label for="email" class={label}>E-mail</label>
+          <input id="email" name="email" type="email" required autocomplete="email" class={field} />
+        </div>
+        <div>
+          <label for="phone" class={label}>Téléphone <span class="font-normal text-[var(--color-text-muted)]">(facultatif)</span></label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" class={field} />
+        </div>
+        <div>
+          <label for="event-date" class={label}>Date de l'événement</label>
+          <input id="event-date" name="event_date" type="date" required class={`${field} [color-scheme:dark]`} />
+        </div>
+        <div>
+          <label for="event-place" class={label}>Lieu / ville</label>
+          <input id="event-place" name="event_place" type="text" required class={field} />
+        </div>
+        <div>
+          <label for="event-type" class={label}>Type d'événement</label>
+          <select id="event-type" name="event_type" required class={field}>
+            <option value="" disabled selected></option>
+            {eventTypes.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="event-guests" class={label}>Nombre de personnes <span class="font-normal text-[var(--color-text-muted)]">(facultatif)</span></label>
+          <input id="event-guests" name="event_guests" type="number" min="1" inputmode="numeric" class={field} />
+        </div>
+      </div>
+      <div>
+        <label for="message" class={label}>Message</label>
+        <textarea id="message" name="message" required rows="4" class={field}></textarea>
+      </div>
+
+      <p id="contact-form-invalid" role="alert" class="hidden text-sm font-medium text-[var(--color-error)]"></p>
+
+      <PillButton type="submit" size="lg" class="w-full">{submitText}</PillButton>
+
+      {success && (
+        <p id="contact-form-success" role="status" class="hidden rounded-lg border border-primary px-4 py-3 text-sm text-[var(--color-text)]">{success}</p>
+      )}
+      {error && (
+        <p id="contact-form-error" role="alert" class="hidden text-sm font-medium text-[var(--color-error)]">{error}</p>
+      )}
+    </form>
+  </div>
+</SectionWrapper>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const successMsg = document.getElementById('contact-form-success');
+  const errorMsg = document.getElementById('contact-form-error');
+  const invalidMsg = document.getElementById('contact-form-invalid');
+  const loadedAtInput = document.getElementById('form-loaded-at') as HTMLInputElement | null;
+
+  if (loadedAtInput) loadedAtInput.value = String(Date.now());
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    successMsg?.classList.add('hidden');
+    errorMsg?.classList.add('hidden');
+    invalidMsg?.classList.add('hidden');
+
+    // Validation native, message du navigateur sous le premier champ invalide.
+    const firstInvalid = form.querySelector(':invalid:not(fieldset)') as HTMLInputElement | null;
+    if (firstInvalid) {
+      if (invalidMsg) {
+        const labelText = form.querySelector(`label[for="${firstInvalid.id}"]`)?.textContent?.trim() ?? '';
+        invalidMsg.textContent = `${labelText} : ${firstInvalid.validationMessage}`;
+        invalidMsg.classList.remove('hidden');
+      }
+      firstInvalid.setAttribute('aria-invalid', 'true');
+      firstInvalid.focus();
+      return;
+    }
+    form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    const typeLabel = form.querySelector('label[for="event-type"]')?.textContent?.trim();
+    const lines = [
+      ['event-date', data.event_date ? new Date(`${data.event_date}T00:00:00`).toLocaleDateString('fr-BE') : ''],
+      ['event-place', data.event_place],
+      ['event-type', data.event_type],
+      ['event-guests', data.event_guests],
+      ['phone', data.phone],
+    ]
+      .filter(([, v]) => v)
+      .map(([id, v]) => `${form.querySelector(`label[for="${id}"]`)?.childNodes[0]?.textContent?.trim() ?? typeLabel} : ${v}`);
+
+    const payload = {
+      name: data.name,
+      email: data.email,
+      company: data.company,
+      loaded_at: data.loaded_at,
+      message: `${lines.join('\n')}\n\n${data.message}`,
+    };
+
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error('request failed');
+
+      successMsg?.classList.remove('hidden');
+      form.reset();
+    } catch {
+      errorMsg?.classList.remove('hidden');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+</script>

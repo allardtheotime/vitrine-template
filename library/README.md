@@ -5,6 +5,8 @@ générique. On copie ici ce dont un nouveau client a besoin, au lieu de relire 
 d'un ancien client ou de réécrire un composant qui existe déjà.
 
 Règles :
+- `variants/<client>/` : version d'un composant de library/ adaptée à un autre thème. Ne
+  remplace pas l'original ; choisir la version la plus proche du DESIGN.md du nouveau client.
 - Copier le fichier dans `src/` du site client, **jamais** le modifier ici pour un client
   précis. Si l'adaptation est générique (bug, prop utile à tous), la reporter ici aussi.
 - Chaque composant est documenté dans `COMPONENTS.md` (sections « Composants créés pour des
@@ -33,6 +35,15 @@ Règles :
 | `components/sections/ContactHours.astro` | Contact + tableau d'horaires + itinéraire | lilot-pates-namur |
 | `components/ui/MobileCTABar.astro` | Barre d'action fixe en bas sur mobile | detongre, lilot-pates-namur |
 | `components/ui/PillButton.astro` | Bouton pilule, variantes fond clair / sombre | lilot-pates-namur |
+| `components/sections/HeroFullBleed.astro` | Hero photo plein cadre, nom géant, ligne de statut, badges, 2 CTA | voltic-namur |
+| `components/sections/ReferenceStrip.astro` | Bandeau de références en texte (lieux, médias), sans logos tiers | voltic-namur |
+| `components/sections/Agenda.astro` | Dates à venir, ou dernier mois joué si aucune date future (jamais vide) | voltic-namur |
+| `components/sections/BookingForm.astro` | Formulaire de booking (date, lieu, type, nombre) sur `/api/contact`, repli Instagram, kit presse | voltic-namur |
+| `components/sections/MediaList.astro` | Cartes vidéos / mixes, miniature YouTube statique, rien de tiers avant clic | voltic-namur |
+| `components/ui/SectionHeading.astro` | En-tête de section numéroté « 01 — Titre » | voltic-namur |
+| `components/ui/InstagramIcon.astro` | Icône Instagram SVG inline (absente de lucide-static) | voltic-namur |
+| `variants/voltic-namur/` | Versions thème sombre (texte blanc sur rouge, repli Instagram sans téléphone) de NavbarDark, FooterDark, MobileCTABar, PillButton, ConceptCards, AboutStory, Gallery + `VolticLayout` | voltic-namur |
+| `ci/rebuild-quotidien.yml` | GitHub Actions : rebuild nocturne via le Deploy Hook (secret `VERCEL_DEPLOY_HOOK`), utile dès qu'un contenu dépend de la date (agenda). Le push exige le scope gh `workflow` | voltic-namur |
 | `sanity/<client>/` | `objects.ts`, `siteContent.ts`, `content.ts` du client : types Sanity et mapping des champs à reprendre avec les composants | — |
 
 ## Dépendances

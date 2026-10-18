@@ -1,0 +1,14 @@
+# Rebuild quotidien (DESIGN.md « Composants / Rebuild ») : l'agenda est calculé au
+# build ; sans publication dans Sanity, une date passée resterait affichée comme
+# « à venir ». Appelle le Deploy Hook Vercel chaque nuit (secret du dépôt).
+name: Rebuild quotidien
+on:
+  schedule:
+    - cron: '15 3 * * *'
+  workflow_dispatch:
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Déclencher le Deploy Hook Vercel
+        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"

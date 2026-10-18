@@ -1,0 +1,21 @@
+---
+// Section propre à ce client (DESIGN.md §Structure 3) : bandeau de références en
+// texte (jamais de logos tiers), statique, qui passe à la ligne sur mobile.
+export interface Props {
+  title?: string;
+  items: string[];
+}
+
+const { title, items = [] } = Astro.props;
+---
+
+<section class="border-y border-[var(--color-border)] bg-[var(--color-surface)] py-6" aria-label={title}>
+  <ul class="mx-auto flex max-w-[1200px] flex-wrap items-center justify-center gap-x-6 gap-y-2 px-4 sm:px-6">
+    {items.map((item, i) => (
+      <li class="flex items-center gap-6">
+        {i > 0 && <span class="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true"></span>}
+        <span class="font-display text-xs font-semibold uppercase tracking-[0.14em] text-[var(--color-text-muted)] sm:text-sm">{item}</span>
+      </li>
+    ))}
+  </ul>
+</section>

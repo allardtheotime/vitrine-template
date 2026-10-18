@@ -1,0 +1,52 @@
+---
+// Section propre à ce client (DESIGN.md « Vidéos en live », masquée tant qu'aucun
+// lien n'est fourni) : cartes vers des vidéos ou mixes. Pour YouTube, miniature
+// statique (img.youtube.com) et ouverture sur YouTube au clic : aucun lecteur ni
+// traceur tiers chargé avant le clic, zéro JS.
+import SectionWrapper from '../ui/SectionWrapper.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+
+export interface Props {
+  number?: string;
+  eyebrow?: string;
+  title: string;
+  items: { title: string; url: string; subtitle?: string }[];
+}
+
+const { number, eyebrow, title, items = [] } = Astro.props;
+
+function youtubeId(url: string): string | undefined {
+  const m = url.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/);
+  return m?.[1];
+}
+---
+
+<SectionWrapper id="live" bg="bg">
+  <div class="reveal">
+    <SectionHeading number={number} eyebrow={eyebrow} title={title} />
+    <ul class="mt-10 grid gap-5 md:grid-cols-3">
+      {items.map((item) => {
+        const yt = youtubeId(item.url);
+        return (
+          <li>
+            <a href={item.url} target="_blank" rel="noopener noreferrer" class="group block overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-[border-color,box-shadow] duration-200 hover:border-primary hover:shadow-[var(--shadow-2)]">
+              <div class="relative aspect-video bg-[var(--color-bg)]">
+                {yt && <img src={`https://img.youtube.com/vi/${yt}/hqdefault.jpg`} alt="" loading="lazy" class="h-full w-full object-cover opacity-80" />}
+                <span class="absolute inset-0 flex items-center justify-center">
+                  <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-[var(--glow)]">
+                    <Icon name={yt ? 'play' : 'music'} class="h-6 w-6" />
+                  </span>
+                </span>
+              </div>
+              <div class="p-5">
+                <h3 class="text-[var(--color-text)]">{item.title}</h3>
+                {item.subtitle && <p class="mt-1 text-sm text-[var(--color-text-muted)]">{item.subtitle}</p>}
+              </div>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</SectionWrapper>

@@ -1,0 +1,56 @@
+---
+// Section propre au client (reprise de library/Gallery, DESIGN.md §Structure 7) :
+// vraies photos, vignettes carrées, zoom léger au survol, crédit du photographe
+// sous la vignette quand il est connu, lien vers Instagram. Zéro JS. La page ne la
+// rend que si au moins une photo existe (jamais de stock).
+import SectionWrapper from '../ui/SectionWrapper.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import InstagramIcon from '../ui/InstagramIcon.astro';
+
+export interface Props {
+  number?: string;
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  images: { src?: string; srcset?: string; alt: string; credit?: string }[];
+  link?: string;
+  linkLabel?: string;
+}
+
+const { number, eyebrow, title, subtitle, images = [], link, linkLabel } = Astro.props;
+---
+
+<SectionWrapper id="photos" bg="surface">
+  <div class="reveal">
+    <SectionHeading number={number} eyebrow={eyebrow} title={title} subtitle={subtitle} />
+
+    <ul class="mt-10 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
+      {images.map((img) => (
+        <li>
+          <figure class="group">
+            <div class="overflow-hidden rounded-xl">
+              <img
+                src={img.src}
+                srcset={img.srcset}
+                sizes="(min-width: 768px) 33vw, 50vw"
+                alt={img.alt}
+                loading="lazy"
+                class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+              />
+            </div>
+            {img.credit && <figcaption class="mt-1.5 text-xs text-[var(--color-text-muted)]">Photo {img.credit}</figcaption>}
+          </figure>
+        </li>
+      ))}
+    </ul>
+
+    {link && linkLabel && (
+      <p class="mt-10">
+        <a href={link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 font-semibold text-[var(--color-text)] underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:text-[var(--color-primary-text)]">
+          <InstagramIcon class="h-4 w-4" />
+          {linkLabel}
+        </a>
+      </p>
+    )}
+  </div>
+</SectionWrapper>
