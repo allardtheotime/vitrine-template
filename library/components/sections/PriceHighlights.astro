@@ -1,0 +1,36 @@
+---
+// Bandeau de prix repères juste sous le hero (DESIGN.md, veille : les chaînes
+// sans rendez-vous affichent leurs forfaits dès l'accueil). 4 cartes maximum,
+// prix repris de la carte des tarifs, lien vers la carte complète. Rendu
+// seulement s'il a au moins un prix. Zéro JS.
+export interface Props {
+  title?: string;
+  items: { label: string; price: string; note?: string }[];
+  ctaText?: string;
+  ctaLink?: string;
+}
+
+const { title, items = [], ctaText, ctaLink = '#carte' } = Astro.props;
+---
+
+<section class="bg-[var(--color-bg)] pt-10 md:pt-14" aria-label={title ?? undefined}>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      {title && <p class="eyebrow eyebrow-on-light">{title}</p>}
+      {ctaText && (
+        <a href={ctaLink} class="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-primary-text)] underline decoration-2 underline-offset-4 hover:text-[var(--color-text)]">
+          {ctaText}
+        </a>
+      )}
+    </div>
+    <ul class="mt-4 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+      {items.map((item) => (
+        <li class="flex flex-col rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-1)] sm:p-5">
+          <span class="text-sm font-semibold text-[var(--color-text)]">{item.label}</span>
+          <span class="tabular mt-1 font-display text-2xl font-bold text-[var(--color-primary-text)] sm:text-3xl">{item.price}</span>
+          {item.note && <span class="mt-1 text-xs text-[var(--color-text-muted)] sm:text-sm">{item.note}</span>}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -28,3 +28,18 @@ export function imageUrl(image: SanityImage | undefined, width: number): string 
   if (!image?.asset) return undefined;
   return builder.image(image).width(width).auto('format').url();
 }
+
+// URL de l'asset tel quel (sans transformation) : pour un logo SVG, que le
+// pipeline d'images Sanity ne doit pas rasteriser. Utilisé par library/sanity/*/content.ts.
+export function imageOriginalUrl(image: SanityImage | undefined): string | undefined {
+  if (!image?.asset) return undefined;
+  return builder.image(image).url();
+}
+
+// srcset pour des images responsives. Ne jamais passer une largeur supérieure à
+// l'original : Sanity agrandit l'image et elle devient floue (cas vécu : hero de
+// hair-family-arlon, photos de 1208 px étirées en pleine hauteur).
+export function imageSrcSet(image: SanityImage | undefined, widths: number[]): string | undefined {
+  if (!image?.asset) return undefined;
+  return widths.map((w) => `${builder.image(image).width(w).quality(85).auto('format').url()} ${w}w`).join(', ');
+}

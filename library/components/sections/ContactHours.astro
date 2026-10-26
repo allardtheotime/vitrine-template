@@ -3,7 +3,8 @@
 // en tableau, adresse + accès + itinéraire, téléphone cliquable, puis le même
 // formulaire que Contact.astro (même champs anti-spam, même appel /api/contact).
 // Repli email : aucune ligne email si la donnée est absente, le formulaire sert
-// de canal écrit.
+// de canal écrit. `mapsUrl` (ex. fiche Google Maps, ajouté pour hair-family-arlon)
+// est prioritaire sur la recherche Google Maps par adresse.
 import PillButton from '../ui/PillButton.astro';
 import SectionWrapper from '../ui/SectionWrapper.astro';
 import Icon from '../ui/Icon.astro';
@@ -16,12 +17,13 @@ export interface Props {
   phone?: string;
   email?: string;
   address?: string;
+  mapsUrl?: string;
   openingHours?: { day: string; hours: string; note?: string }[];
 }
 
-const { title = 'Contact', intro, access, formTitle, phone, email, address, openingHours = [] } = Astro.props;
+const { title = 'Contact', intro, access, formTitle, phone, email, address, mapsUrl: mapsLink, openingHours = [] } = Astro.props;
 const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
-const mapsUrl = address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}` : undefined;
+const mapsUrl = mapsLink || (address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}` : undefined);
 ---
 
 <SectionWrapper id="contact" bg="surface">

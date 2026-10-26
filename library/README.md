@@ -48,6 +48,11 @@ Règles :
 | `variants/voltic-namur/` | Versions thème sombre (texte blanc sur rouge, repli Instagram sans téléphone) de NavbarDark, FooterDark, MobileCTABar, PillButton, ConceptCards, AboutStory, Gallery + `VolticLayout` | voltic-namur |
 | `ci/rebuild-quotidien.yml` | GitHub Actions : rebuild nocturne via le Deploy Hook (secret `VERCEL_DEPLOY_HOOK`), utile dès qu'un contenu dépend de la date (agenda). Le push exige le scope gh `workflow` | voltic-namur |
 | `sanity/laetitia-coiffure-arlon/` | Schéma salon de coiffure : bandeau congés, tarifs (via `menuCategory`), soin signature, réalisations, horaires, SMS | laetitia-coiffure-arlon |
+| `components/sections/HeroSplitStatus.astro` | Hero sombre, photo en carte 3:2 (jamais agrandie), 2e bouton libre (itinéraire), statut « Ouvert / Fermé » calculé (heure de Bruxelles) | hair-family-arlon |
+| `components/sections/PriceHighlights.astro` | Bandeau de 4 prix repères sous le hero, lien vers la carte | hair-family-arlon |
+| `components/sections/GalleryBento.astro` | Galerie en mosaïque (1re photo 2×2), sans JS | hair-family-arlon |
+| `components/ui/DemoNoticeThemed.astro` | Pop-up démo avec texte foncé sur le bouton (primaire clair : turquoise, jaune…) | lilot-pates-namur, hair-family-arlon |
+| `sanity/hair-family-arlon/` | Schéma salon sans rendez-vous : bandeau, prix repères, tarifs, galerie, horaires, `mapsUrl`, `legalAddress` (siège ≠ adresse du commerce) + `seed-salon.mjs` (seed complet, le seed du template ne couvre que 4 sections) | hair-family-arlon |
 | `sanity/<client>/` | `objects.ts`, `siteContent.ts`, `content.ts` du client : types Sanity et mapping des champs à reprendre avec les composants | — |
 
 ## Dépendances
@@ -60,3 +65,8 @@ Règles :
 - Polices d'affichage (`font-display`) : à installer via `@fontsource/*` selon DESIGN.md.
 - Les champs Sanity attendus sont ceux de `sanity/lilot-pates-namur/` : copier seulement
   les types et champs des composants retenus.
+- `PriceHighlights` utilise `--color-primary-text` (texte de la couleur primaire sur fond clair,
+  contraste AA) et la classe `.eyebrow-on-light` : à définir dans le global.css du client.
+- `RestaurantLayout` importe `DemoNotice` : pour un primaire clair, remplacer l'import par
+  `DemoNoticeThemed`. Avec un logo clair, passer aussi les pages légales et la 404 sur ce layout
+  (le `BaseLayout` a un en-tête clair où le logo devient invisible).
