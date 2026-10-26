@@ -75,6 +75,7 @@ src/
 │       ├── SectionWrapper.astro
 │       ├── Badge.astro
 │       ├── Icon.astro          ← icônes Lucide inline, cf. §9bis
+│       ├── MobileCTABar.astro  ← barre d'action mobile, rendue par BaseLayout si mobileCtaText
 │       └── DemoNotice.astro
 ├── layouts/
 │   └── BaseLayout.astro        ← layout unique, site one-page

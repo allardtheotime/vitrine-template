@@ -4,6 +4,9 @@ Ces composants ne sont **pas branchés** dans le template : `src/` reste le boil
 générique. On copie ici ce dont un nouveau client a besoin, au lieu de relire le repo
 d'un ancien client ou de réécrire un composant qui existe déjà.
 
+`MobileCTABar` a été promue dans `src/components/ui/` (4 clients) : les layouts de library/
+l'importent depuis là, avec `ctaIcon` pour l'icône du second bouton.
+
 Règles :
 - `variants/<client>/` : version d'un composant de library/ adaptée à un autre thème. Ne
   remplace pas l'original ; choisir la version la plus proche du DESIGN.md du nouveau client.
@@ -33,7 +36,6 @@ Règles :
 | `components/sections/ZoneIntervention.astro` | Zone desservie en badges | detongre-construction-virton |
 | `components/sections/TestimonialsQuotes.astro` | Avis réels, note globale, sans étoiles inventées | lilot-pates-namur |
 | `components/sections/ContactHours.astro` | Contact + tableau d'horaires + itinéraire | lilot-pates-namur |
-| `components/ui/MobileCTABar.astro` | Barre d'action fixe en bas sur mobile | detongre, lilot-pates-namur |
 | `components/ui/PillButton.astro` | Bouton pilule, variantes fond clair / sombre | lilot-pates-namur |
 | `components/sections/HeroFullBleed.astro` | Hero photo plein cadre, nom géant, ligne de statut, badges, 2 CTA | voltic-namur |
 | `components/sections/ReferenceStrip.astro` | Bandeau de références en texte (lieux, médias), sans logos tiers | voltic-namur |
@@ -42,8 +44,10 @@ Règles :
 | `components/sections/MediaList.astro` | Cartes vidéos / mixes, miniature YouTube statique, rien de tiers avant clic | voltic-namur |
 | `components/ui/SectionHeading.astro` | En-tête de section numéroté « 01 — Titre » | voltic-namur |
 | `components/ui/InstagramIcon.astro` | Icône Instagram SVG inline (absente de lucide-static) | voltic-namur |
+| `components/sections/Spotlight.astro` | Offre phare : photo, liste de ce qui est compris, prix, CTA | laetitia-coiffure-arlon |
 | `variants/voltic-namur/` | Versions thème sombre (texte blanc sur rouge, repli Instagram sans téléphone) de NavbarDark, FooterDark, MobileCTABar, PillButton, ConceptCards, AboutStory, Gallery + `VolticLayout` | voltic-namur |
 | `ci/rebuild-quotidien.yml` | GitHub Actions : rebuild nocturne via le Deploy Hook (secret `VERCEL_DEPLOY_HOOK`), utile dès qu'un contenu dépend de la date (agenda). Le push exige le scope gh `workflow` | voltic-namur |
+| `sanity/laetitia-coiffure-arlon/` | Schéma salon de coiffure : bandeau congés, tarifs (via `menuCategory`), soin signature, réalisations, horaires, SMS | laetitia-coiffure-arlon |
 | `sanity/<client>/` | `objects.ts`, `siteContent.ts`, `content.ts` du client : types Sanity et mapping des champs à reprendre avec les composants | — |
 
 ## Dépendances

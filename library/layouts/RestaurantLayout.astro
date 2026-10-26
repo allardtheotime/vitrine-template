@@ -4,7 +4,7 @@
 import NavbarDark from '../components/layout/NavbarDark.astro';
 import FooterDark from '../components/layout/FooterDark.astro';
 import MobileCTABar from '../components/ui/MobileCTABar.astro';
-import DemoNotice from '../components/ui/DemoNoticeThemed.astro';
+import DemoNotice from '../components/ui/DemoNotice.astro';
 import Analytics from '@vercel/analytics/astro';
 import '../styles/global.css';
 
@@ -37,6 +37,9 @@ export interface Props {
   hours?: string;
   bceNumber?: string;
   legalForm?: string;
+  mobileCtaText?: string;
+  mobileCtaLink?: string;
+  mobileCtaIcon?: string;
 }
 
 const {
@@ -68,6 +71,9 @@ const {
   hours,
   bceNumber,
   legalForm,
+  mobileCtaText = navCtaText,
+  mobileCtaLink = navCtaLink,
+  mobileCtaIcon = 'mail',
 } = Astro.props;
 
 const absoluteOgImage = ogImage ? new URL(ogImage, Astro.site).href : undefined;
@@ -142,7 +148,7 @@ const absoluteOgImage = ogImage ? new URL(ogImage, Astro.site).href : undefined;
       bceNumber={bceNumber}
       facebook={facebook}
     />
-    {navCtaText && <MobileCTABar ctaText={navCtaText} ctaHref={navCtaLink} phone={phone} />}
+    {mobileCtaText && <MobileCTABar ctaText={mobileCtaText} ctaHref={mobileCtaLink} ctaIcon={mobileCtaIcon} phone={phone} />}
     <DemoNotice isDemo={isDemo} />
     <Analytics />
   </body>

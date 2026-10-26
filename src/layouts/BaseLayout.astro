@@ -2,6 +2,7 @@
 import Navbar from '../components/layout/Navbar.astro';
 import Footer from '../components/layout/Footer.astro';
 import DemoNotice from '../components/ui/DemoNotice.astro';
+import MobileCTABar from '../components/ui/MobileCTABar.astro';
 import Analytics from '@vercel/analytics/astro';
 import '../styles/global.css';
 
@@ -29,6 +30,10 @@ export interface Props {
   facebook?: string;
   isDemo?: boolean;
   ogImage?: string;
+  /** Barre d'action fixe sur mobile : rendue seulement si mobileCtaText est fourni */
+  mobileCtaText?: string;
+  mobileCtaHref?: string;
+  mobileCtaIcon?: string;
 }
 
 const {
@@ -55,6 +60,9 @@ const {
   facebook,
   isDemo = false,
   ogImage,
+  mobileCtaText,
+  mobileCtaHref = '#contact',
+  mobileCtaIcon = 'mail',
 } = Astro.props;
 
 const absoluteOgImage = ogImage ? new URL(ogImage, Astro.site).href : undefined;
@@ -116,6 +124,7 @@ const absoluteOgImage = ogImage ? new URL(ogImage, Astro.site).href : undefined;
       <slot />
     </main>
     <Footer siteName={siteName} phone={phone} email={email} address={address} legalName={legalName} facebook={facebook} />
+    {mobileCtaText && <MobileCTABar ctaText={mobileCtaText} ctaHref={mobileCtaHref} ctaIcon={mobileCtaIcon} phone={phone} />}
     <DemoNotice isDemo={isDemo} />
     <Analytics />
   </body>

@@ -1,17 +1,20 @@
 ---
-// Composant client (déjà créé pour detongre-construction-virton, cf. COMPONENTS.md),
-// adapté ici : second bouton vers la carte au lieu d'un CTA formulaire.
-// Barre fixe en bas d'écran, mobile/tablette uniquement (masquée dès lg).
-// Repli téléphone : le bouton « Appeler » n'existe que si `phone` est fourni.
+// Barre d'action fixe en bas d'écran, mobile/tablette uniquement (masquée dès lg).
+// Promue dans le boilerplate après 4 clients (detongre-construction-virton,
+// lilot-pates-namur, voltic-namur, laetitia-coiffure-arlon).
+// Repli téléphone : le bouton « Appeler » n'existe que si `phone` est fourni ;
+// le second bouton (formulaire, carte, tarifs…) reste toujours affiché.
+// `ctaIcon` = nom Lucide (cf. Icon.astro), ex. "mail", "utensils", "list".
 import Icon from './Icon.astro';
 
 export interface Props {
   ctaText: string;
   ctaHref?: string;
+  ctaIcon?: string;
   phone?: string;
 }
 
-const { ctaText, ctaHref = '#contact', phone } = Astro.props;
+const { ctaText, ctaHref = '#contact', ctaIcon = 'mail', phone } = Astro.props;
 const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
 ---
 
@@ -29,7 +32,7 @@ const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : un
     href={ctaHref}
     class="btn-press flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-primary-hover)]"
   >
-    <Icon name="utensils" class="h-4 w-4" />
+    <Icon name={ctaIcon} class="h-4 w-4" />
     {ctaText}
   </a>
 </div>

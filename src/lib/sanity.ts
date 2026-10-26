@@ -13,7 +13,10 @@ export const client = createClient({
   projectId: 'REMPLACER-PAR-LE-PROJECT-ID',
   dataset: 'production',
   apiVersion: '2024-01-01',
-  useCdn: true,
+  // Lecture au build uniquement : sans CDN, sinon le rebuild déclenché par le
+  // webhook juste après une publication peut encore lire l'ancienne version
+  // (cas vécu sur laetitia-coiffure-arlon).
+  useCdn: false,
 });
 
 const builder = createImageUrlBuilder(client);
