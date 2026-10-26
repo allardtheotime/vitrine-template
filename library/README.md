@@ -35,7 +35,7 @@ Règles :
 | `components/sections/Realisations.astro` | Galerie de chantiers (artisans) | detongre-construction-virton |
 | `components/sections/ZoneIntervention.astro` | Zone desservie en badges | detongre-construction-virton |
 | `components/sections/TestimonialsQuotes.astro` | Avis réels, note globale, sans étoiles inventées | lilot-pates-namur |
-| `components/sections/ContactHours.astro` | Contact + tableau d'horaires + itinéraire | lilot-pates-namur |
+| `components/sections/ContactHours.astro` | Contact + tableau d'horaires + itinéraire, lien WhatsApp optionnel (`whatsappText`) | lilot-pates-namur, rosa-hair-coiffure-habay |
 | `components/ui/PillButton.astro` | Bouton pilule, variantes fond clair / sombre | lilot-pates-namur |
 | `components/sections/HeroFullBleed.astro` | Hero photo plein cadre, nom géant, ligne de statut, badges, 2 CTA | voltic-namur |
 | `components/sections/ReferenceStrip.astro` | Bandeau de références en texte (lieux, médias), sans logos tiers | voltic-namur |
@@ -53,6 +53,9 @@ Règles :
 | `components/sections/GalleryBento.astro` | Galerie en mosaïque (1re photo 2×2), sans JS | hair-family-arlon |
 | `components/ui/DemoNoticeThemed.astro` | Pop-up démo avec texte foncé sur le bouton (primaire clair : turquoise, jaune…) | lilot-pates-namur, hair-family-arlon |
 | `sanity/hair-family-arlon/` | Schéma salon sans rendez-vous : bandeau, prix repères, tarifs, galerie, horaires, `mapsUrl`, `legalAddress` (siège ≠ adresse du commerce) + `seed-salon.mjs` (seed complet, le seed du template ne couvre que 4 sections) | hair-family-arlon |
+| `components/ui/MobileCTABarContrast.astro` | Barre mobile pour un primaire foncé (texte blanc sur le bouton plein) | rosa-hair-coiffure-habay |
+| `variants/rosa-hair-coiffure-habay/` | Versions « primaire foncé » (rose bois, texte blanc dessus ; rose clair `--color-primary-light` pour tout ce qui est posé sur fond sombre) de HeroSplit (sans les restes de L'ilôt pâtes), Menu (ancre `#tarifs`), Announcement, ConceptCards (ancre `#prestations`), Spotlight, ContactHours, NavbarDark, FooterDark (filet rose au lieu du tricolore), PillButton, RestaurantLayout (importe `MobileCTABarContrast`) | rosa-hair-coiffure-habay |
+| `sanity/rosa-hair-coiffure-habay/` | Schéma salon de laetitia-coiffure-arlon + `mapsUrl`, `mobileCtaIcon`, lien WhatsApp (`contactWhatsappText`) à la place du SMS, prestation phare + `seed-salon.mjs` complet (bandeau, hero, prestations, tarifs, prestation phare, galerie, salon, avis avec note globale, horaires, WhatsApp) | rosa-hair-coiffure-habay |
 | `sanity/<client>/` | `objects.ts`, `siteContent.ts`, `content.ts` du client : types Sanity et mapping des champs à reprendre avec les composants | — |
 
 ## Dépendances
@@ -70,3 +73,10 @@ Règles :
 - `RestaurantLayout` importe `DemoNotice` : pour un primaire clair, remplacer l'import par
   `DemoNoticeThemed`. Avec un logo clair, passer aussi les pages légales et la 404 sur ce layout
   (le `BaseLayout` a un en-tête clair où le logo devient invisible).
+- Les variantes `variants/rosa-hair-coiffure-habay/` utilisent `--color-primary-light`, `--color-primary-text` et les
+  classes `.text-primary-light` / `.border-primary-light` : les définir dans le global.css du client
+  (cf. `rosa-hair-coiffure-habay/site/src/styles/global.css`). `DemoNotice` standard convient
+  (texte blanc sur primaire foncé).
+- Ancres de section héritées de L'ilôt pâtes dans les originaux (`#carte`, `#concept`,
+  `#cuisine`, `#histoire`) : les renommer dans la copie du client (`#tarifs`, `#prestations`,
+  `#avant-apres`, `#salon` chez rosa-hair-coiffure-habay).

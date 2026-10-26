@@ -1,0 +1,40 @@
+---
+// Variante de MobileCTABar pour un primaire foncé (rosa-hair-coiffure-habay) : texte
+// blanc sur le bouton plein, contour --color-primary-light sur le bouton Appeler.
+// Barre d'action fixe en bas d'écran, mobile/tablette uniquement (masquée dès lg).
+// Promue dans le boilerplate après 4 clients (detongre-construction-virton,
+// lilot-pates-namur, voltic-namur, laetitia-coiffure-arlon).
+// Repli téléphone : le bouton « Appeler » n'existe que si `phone` est fourni ;
+// le second bouton (formulaire, carte, tarifs…) reste toujours affiché.
+// `ctaIcon` = nom Lucide (cf. Icon.astro), ex. "mail", "utensils", "list".
+import Icon from './Icon.astro';
+
+export interface Props {
+  ctaText: string;
+  ctaHref?: string;
+  ctaIcon?: string;
+  phone?: string;
+}
+
+const { ctaText, ctaHref = '#contact', ctaIcon = 'mail', phone } = Astro.props;
+const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
+---
+
+<div class="fixed inset-x-0 bottom-0 z-40 flex gap-2 bg-[var(--color-secondary)] p-3 shadow-[var(--shadow-2)] lg:hidden">
+  {tel && (
+    <a
+      href={tel}
+      class="btn-press flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full border-[1.5px] border-primary-light px-4 text-sm font-semibold text-[var(--color-on-dark)]"
+    >
+      <Icon name="phone" class="h-4 w-4" />
+      Appeler
+    </a>
+  )}
+  <a
+    href={ctaHref}
+    class="btn-press flex min-h-[48px] flex-1 items-center justify-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)]"
+  >
+    <Icon name={ctaIcon} class="h-4 w-4" />
+    {ctaText}
+  </a>
+</div>

@@ -1,0 +1,91 @@
+---
+// Variante client de Footer.astro (DESIGN.md §Structure 10) : fond vert quasi
+// noir, logo, coordonnées, horaires résumés, mention légale avec BCE.
+// Repli conservé : chaque ligne dont la donnée est absente (ex. email) est omise.
+import Icon from '../ui/Icon.astro';
+
+export interface Props {
+  siteName: string;
+  logo?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  hours?: string;
+  legalName?: string;
+  legalForm?: string;
+  bceNumber?: string;
+  facebook?: string;
+}
+
+const { siteName, logo, phone, email, address, hours, legalName, legalForm, bceNumber, facebook } = Astro.props;
+const year = new Date().getFullYear();
+const tel = phone ? `tel:+32${phone.replace(/\s+/g, '').replace(/^0/, '')}` : undefined;
+const legalShort = legalForm?.match(/\(([^)]+)\)/)?.[1];
+---
+
+<footer class="bg-[var(--color-footer)] pb-28 pt-14 text-[var(--color-on-dark-muted)] lg:pb-12">
+  <div class="mx-auto max-w-6xl px-5 lg:px-8">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        {logo ? (
+          <img src={logo} alt={siteName} class="h-12 w-auto" width="280" height="48" loading="lazy" />
+        ) : (
+          <p class="font-display text-xl text-primary-light">{siteName}</p>
+        )}
+        <div class="mt-4 h-0.5 w-12 bg-[var(--color-primary-light)]" aria-hidden="true"></div>
+      </div>
+
+      <div class="space-y-2 text-sm">
+        {address && (
+          <p class="flex items-start gap-2">
+            <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-primary-light" />
+            <span>{address}</span>
+          </p>
+        )}
+        {tel && (
+          <p>
+            <a href={tel} class="inline-flex items-center gap-2 hover:text-[var(--color-on-dark)]">
+              <Icon name="phone" class="h-4 w-4 shrink-0 text-primary-light" />
+              {phone}
+            </a>
+          </p>
+        )}
+        {email && (
+          <p>
+            <a href={`mailto:${email}`} class="inline-flex items-center gap-2 hover:text-[var(--color-on-dark)]">
+              <Icon name="mail" class="h-4 w-4 shrink-0 text-primary-light" />
+              {email}
+            </a>
+          </p>
+        )}
+      </div>
+
+      <div class="space-y-2 text-sm md:text-right">
+        {hours && (
+          <p class="flex items-start gap-2 md:justify-end">
+            <Icon name="clock" class="mt-0.5 h-4 w-4 shrink-0 text-primary-light" />
+            <span>{hours}</span>
+          </p>
+        )}
+        {facebook && (
+          <p>
+            <a href={facebook} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 hover:text-[var(--color-on-dark)]" aria-label="Page Facebook (nouvel onglet)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="text-primary-light"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12Z"/></svg>
+              Facebook
+            </a>
+          </p>
+        )}
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-3 border-t border-[color-mix(in_srgb,var(--color-primary-light)_25%,transparent)] pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
+      <p>
+        &copy; {year} {legalName || siteName}{legalShort ? ` ${legalShort}` : ''}{bceNumber ? ` · BCE ${bceNumber}` : ''}
+      </p>
+      <div class="flex items-center gap-5">
+        <a href="/mentions-legales" class="inline-flex items-center hover:text-[var(--color-on-dark)]">Mentions légales</a>
+        <a href="/politique-de-confidentialite" class="inline-flex items-center hover:text-[var(--color-on-dark)]">Confidentialité</a>
+      </div>
+    </div>
+  </div>
+</footer>

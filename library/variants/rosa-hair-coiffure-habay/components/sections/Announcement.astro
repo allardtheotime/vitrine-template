@@ -1,0 +1,25 @@
+---
+// Section propre à ce client (DESIGN.md §Structure 3) : bandeau d'actualité
+// (déménagement), texte entièrement piloté par Sanity, masquable via `visible`.
+// Pas de bouton de fermeture : aucune dépendance JS.
+import Icon from '../ui/Icon.astro';
+
+export interface Props {
+  title: string;
+  text?: string;
+}
+
+const { title, text } = Astro.props;
+---
+
+<section class="border-t border-[color-mix(in_srgb,var(--color-primary-light)_45%,transparent)] bg-[var(--color-footer)] text-[var(--color-on-dark)]" aria-label={title}>
+  <div class="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:gap-6 lg:px-8">
+    <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-secondary)] text-primary-light">
+      <Icon name="megaphone" class="h-6 w-6" />
+    </span>
+    <div>
+      <p class="font-display text-xl font-semibold italic text-primary-light">{title}</p>
+      {text && <p class="mt-1 text-[var(--color-on-dark-muted)]">{text}</p>}
+    </div>
+  </div>
+</section>
